@@ -10,7 +10,7 @@ using std::ios;
 using std::ostringstream;
 
 
-programHandle::programHandle(void) : handle(0), logText(""){}
+programHandle::programHandle(void) : program(-1), logText(""){}
 
 
 programHandle::~programHandle(void){}
@@ -73,15 +73,15 @@ bool programHandle::loadShader(const string& file, GLSL_SHADER::SHADER_TYPE shad
 	}
 	ifs.close();
 
-	return compileShader(file, shaderType);
+	return compileShader(code.str(), shaderType);
 }
 
 bool programHandle::compileShader(const string& src, GLSL_SHADER::SHADER_TYPE shaderType)
 {
-	if(handle <= 0){
-		handle = glCreateProgram();
-		if(handle == 0){
-			logText = "Unable to create shader program";
+	if(program <= 0){
+		program = glCreateProgram();
+		if(program == 0){
+			logText = "Unable to create program";
 			printLog();
 			return false;
 		}
@@ -124,7 +124,7 @@ bool programHandle::compileShader(const string& src, GLSL_SHADER::SHADER_TYPE sh
 		delete[] cLog; 
 	}
 	else{
-		glAttachShader(handle, shader);
+		glAttachShader(program, shader);
 	}
 	return true;
 }

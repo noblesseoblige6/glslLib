@@ -1,6 +1,7 @@
 #pragma once
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <gl\freeglut.h>
 
 #include <string>
 using std::string;
@@ -21,7 +22,7 @@ namespace GLSL_SHADER {
 class programHandle
 {
 private:
-	int handle;
+	int program;
 	string logText;
 	bool compileShader(const string&, GLSL_SHADER::SHADER_TYPE);
 	bool linkProgram();
