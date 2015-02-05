@@ -1,5 +1,6 @@
 #include "programHandle.h"
 
+#include<cstdio>
 #include <sys/stat.h>
 #include <fstream>
 
@@ -179,7 +180,103 @@ void programHandle::useProgram()
 	glUseProgram(program);
 }
 
-void setUniform(const string& name, int input)
+GLint programHandle::getUniformLocation(const string& name)
 {
+	return glGetUniformLocation(program, name.c_str());
+}
 
+void programHandle::setUniform(const string& name, int val)
+{
+	GLuint loc = getUniformLocation(name);
+	if(loc >= 0){
+		glUniform1i(loc, val);
+	}
+	else{
+		logText = "Not found uniform named" +name;
+		printLog();
+	}
+}
+
+void programHandle::setUniform(const string& name, float val)
+{
+	GLuint loc = getUniformLocation(name);
+	if(loc >= 0){
+		glUniform1f(loc, val);
+	}
+	else{
+		logText = "Not found uniform named" +name;
+		printLog();
+	}
+}
+
+void programHandle::setUniform(const string& name, double val)
+{
+	GLuint loc = getUniformLocation(name);
+	if(loc >= 0){
+		glUniform1d(loc, val);
+	}
+	else{
+		logText = "Not found uniform named" +name;
+		printLog();
+	}
+}
+
+void programHandle::setUniform(const string& name, glm::vec2 vec)
+{
+	GLuint loc = getUniformLocation(name);
+	if(loc >= 0){
+		glUniform2fv(loc, 2, glm::value_ptr(vec));
+	}
+	else{
+		logText = "Not found uniform named" +name;
+		printLog();
+	}
+}
+
+void programHandle::setUniform(const string& name, glm::vec3 vec)
+{
+	GLuint loc = getUniformLocation(name);
+	if(loc >= 0){
+		glUniform3fv(loc, 3, glm::value_ptr(vec));
+	}
+	else{
+		logText = "Not found uniform named" +name;
+		printLog();
+	}
+}
+
+void programHandle::setUniform(const string& name, glm::vec4 vec)
+{
+	GLuint loc = getUniformLocation(name);
+	if(loc >= 0){
+		glUniform4fv(loc, 4, glm::value_ptr(vec));
+	}
+	else{
+		logText = "Not found uniform named" +name;
+		printLog();
+	}
+}
+
+void programHandle::setUniform(const string& name, glm::mat3 mat)
+{
+	GLuint loc = getUniformLocation(name);
+	if(loc >= 0){
+		glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
+	}
+	else{
+		logText = "Not found uniform named" +name;
+		printLog();
+	}
+}
+
+void programHandle::setUniform(const string& name, glm::mat4 mat)
+{
+	GLuint loc = getUniformLocation(name);
+	if(loc >= 0){
+		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
+	}
+	else{
+		logText = "Not found uniform named" +name;
+		printLog();
+	}
 }

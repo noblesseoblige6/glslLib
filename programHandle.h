@@ -7,7 +7,7 @@
 using std::string;
 
 #include <glm\glm.hpp>
-
+#include <glm/gtc/type_ptr.hpp>
 
 namespace GLSL_SHADER {
 	enum SHADER_TYPE{
@@ -28,7 +28,7 @@ private:
 	
 	void printLog();
 	bool fileExists(const string&);
-
+	GLint getUniformLocation(const string&);
 public:
 	programHandle(void);
 	~programHandle(void);
@@ -42,9 +42,11 @@ public:
 	void setUniform(const string&, int);
 	void setUniform(const string&, float);
 	void setUniform(const string&, double);
+	void setUniform(const string&, bool);
+	void setUniform(const string&, glm::vec2);
 	void setUniform(const string&, glm::vec3);
 	void setUniform(const string&, glm::vec4);
-	void setUniform(const string&, glm::mat3x3);
-	void setUniform(const string&, glm::mat4x4);
+	void setUniform(const string&, glm::mat3);
+	void setUniform(const string&, glm::mat4);
 };
 
