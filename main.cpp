@@ -21,4 +21,10 @@ int main(int argc, char* argv[])
 
 	programHandle ph;
 	ph.loadShader("FrasnelReflect.vs", GLSL_SHADER::VERTEX);
+	ph.loadShader("FrasnelReflect.fs", GLSL_SHADER::FRAGMENT);
+	ph.linkProgram();
+	ph.useProgram();
+
+	return 0;
 }
+

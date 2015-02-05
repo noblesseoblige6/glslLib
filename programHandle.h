@@ -25,7 +25,7 @@ private:
 	int program;
 	string logText;
 	bool compileShader(const string&, GLSL_SHADER::SHADER_TYPE);
-	bool linkProgram();
+	
 	void printLog();
 	bool fileExists(const string&);
 
@@ -33,7 +33,11 @@ public:
 	programHandle(void);
 	~programHandle(void);
 	bool loadShader(const string&, GLSL_SHADER::SHADER_TYPE);
+	bool linkProgram();
 	void useProgram();
+
+	void bindAttribLocation(GLuint location, const char* name);
+	void bindFragDataLocation(GLuint location, const char* name);
 
 	void setUniform(const string&, int);
 	void setUniform(const string&, float);
