@@ -128,3 +128,58 @@ bool programHandle::compileShader(const string& src, GLSL_SHADER::SHADER_TYPE sh
 	}
 	return true;
 }
+
+bool programHandle::linkProgram()
+{
+	if(program <= 0){
+		logText = "There is no program object";
+		return false;
+	}
+
+	glLinkProgram(program);
+
+	int status = 0;
+	glGetProgramiv(program, GL_LINK_STATUS, &status);
+	if(status == GL_FALSE){
+		int length = 0;
+		logText = "";
+
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+		if(length > 0){
+			char* c_log = new char[length];
+			int written = 0;
+			glGetProgramInfoLog(program, length, &written, c_log);
+			logText = c_log;
+			printLog();
+			delete[] c_log;
+		}
+	return false;
+	}
+	else{
+		return true;
+	}
+}
+
+void programHandle::bindAttribLocation(GLuint location, const char* name)
+{
+	glBindAttribLocation(program, location, name);
+}
+
+void programHandle::bindFragDataLocation(GLuint location, const char* name)
+{
+	glBindFragDataLocation(program, location, name);
+}
+
+void programHandle::useProgram()
+{
+	if(program <= 0){
+		logText = "There is no program object";
+		return;
+	}
+	glUseProgram(program);
+}
+
+void setUniform(const string& name, int input)
+{
+
+}
