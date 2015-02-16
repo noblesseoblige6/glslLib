@@ -225,7 +225,7 @@ void programHandle::setUniform(const string& name, glm::vec2 vec)
 {
 	GLuint loc = getUniformLocation(name);
 	if(loc >= 0){
-		glUniform2fv(loc, 2, glm::value_ptr(vec));
+		glUniform2fv(loc, 1, glm::value_ptr(vec));
 	}
 	else{
 		logText = "Not found uniform named" +name;
@@ -237,7 +237,7 @@ void programHandle::setUniform(const string& name, glm::vec3 vec)
 {
 	GLuint loc = getUniformLocation(name);
 	if(loc >= 0){
-		glUniform3fv(loc, 3, glm::value_ptr(vec));
+		glUniform3fv(loc, 1, glm::value_ptr(vec));
 	}
 	else{
 		logText = "Not found uniform named" +name;
@@ -249,7 +249,7 @@ void programHandle::setUniform(const string& name, glm::vec4 vec)
 {
 	GLuint loc = getUniformLocation(name);
 	if(loc >= 0){
-		glUniform4fv(loc, 4, glm::value_ptr(vec));
+		glUniform4fv(loc, 1, glm::value_ptr(vec));
 	}
 	else{
 		logText = "Not found uniform named" +name;
