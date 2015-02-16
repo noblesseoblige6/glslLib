@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "programHandle.h"
+#include "glHandle.h"
 
 int main(int argc, char* argv[])
 {
@@ -13,11 +14,8 @@ int main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_RGBA| GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("GLEW");
 
-	int err = glewInit();
-	if (err != GLEW_OK){
-		std::cout<<glewGetErrorString(err)<<std::endl;
-		exit(1);
-	}
+	glHandle gh;
+	gh.init();
 
 	programHandle ph;
 	ph.loadShader("FrasnelReflect.vs", GLSL_SHADER::VERTEX);
