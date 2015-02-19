@@ -1,15 +1,17 @@
 #pragma once
 #include "programHandle.h"
+#include <glm/glm.hpp>
 
-class Shader
+
+class Shader : public programHandle
 {
-private:
-	programHandle program;
-
 public:
 	Shader(void);
+	Shader(const string&, const string&);
+
 	~Shader(void);
-	virtual bool init();
+	void init(const string&, const string&);
 	void useShader();
+	void printVariables();
 };
 

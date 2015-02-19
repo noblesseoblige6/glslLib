@@ -4,12 +4,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform2.hpp>
 
-#include "programHandle.h"
+#include "Shader.h"
 #include "glHandle.h"
 #include "vbotorus.h"
 
 glHandle Ghandle;
-programHandle Phandle;
+//programHandle Phandle;
+Shader Phandle;
 VBOTorus* torus;
 
 int Height, Width;
@@ -20,26 +21,23 @@ glm::mat4 Model;
 
 void initProgram()
 {
-	Phandle.loadShader("diffuse.vert", GLSL_SHADER::VERTEX);
-	Phandle.loadShader("diffuse.frag", GLSL_SHADER::FRAGMENT);
-	Phandle.linkProgram();
-	Phandle.useProgram();
-
+     Phandle.init("diffuse.vert", "diffuse.frag");
 	Phandle.printAttributes();
 	Phandle.printUniforms();
+
 }
 
 void setMatrices()
 {
-
 	Model = glm::mat4(1.0f);
 	Model *= glm::rotate(-35.0f, glm::vec3(1.0f,0.0f,0.0f));
-    Model *= glm::rotate(35.0f, glm::vec3(0.0f,1.0f,0.0f));
+	Model *= glm::rotate(35.0f, glm::vec3(0.0f,1.0f,0.0f));
 	glm::vec4 lightPos = glm::vec4(5.0f,5.0f,2.0f,1.0f);
 	glm::vec3 materialIntensity = glm::vec3(0.9f, 0.5f, 0.3f);
 	glm::vec3 lightIntensity = glm::vec3(1.0f, 1.0f, 1.0f);
 
 	glm::mat4 modelView = View * Model;
+
 	Phandle.setUniform("ModelViewMatrix", modelView);
 	Phandle.setUniform("MVP", Projection*modelView);
 	Phandle.setUniform("Kd", materialIntensity);
@@ -54,12 +52,10 @@ void display()
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	torus = new VBOTorus(0.7, 0.3, 40, 40);
-	if(Phandle.validateProgram()){
 	setMatrices();
 	torus->render();
 	
 	glutSwapBuffers();
-	}
 }
 
 void resize(int w, int h)

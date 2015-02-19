@@ -1,34 +1,79 @@
 #include "shaderHandle.h"
+#include "PhongShader.h"
 
-
-shaderHandle::shaderHandle(void)
-{
-	init("");
-}
+shaderHandle::shaderHandle(void){}
 
 shaderHandle::~shaderHandle(void)
-{}
-
-shaderHandle::shaderHandle(string& shader)
 {
-	init(shader);
+delete shader;
 }
-void shaderHandle::init(string&)
+
+shaderHandle::shaderHandle(SHADER_NAME shaderName)
 {
-	switch(shader){
-	case "Phong":
+	switch(shaderName){
+	case PHONG:
 		shader = new PhongShader();
 		break;
 	default:
 		break;
 	}
 }
-void shaderHandle::use()
+
+void shaderHandle::init(SHADER_NAME shaderName)
 {
-	shader.useShader();
+	switch(shaderName){
+	case PHONG:
+		shader = new PhongShader();
+		break;
+	default:
+		break;
+	}
 }
 
-template<typename T> bool shaderHandle::setUniforms(T val, string& name)
+void shaderHandle::use()
 {
-	shader.setUniform(val, name);
+	shader->useShader();
+}
+
+void shaderHandle::printVariables(SHADER_VARIABLE val)
+{
+	//shader->printVariables(val);
+}
+
+void shaderHandle::setParameter(const string& name, int val)
+{
+	shader->setUniform(name, val);
+}
+void shaderHandle::setParameter(const string& name, float val)
+{
+	shader->setUniform(name, val);
+}
+void shaderHandle::setParameter(const string& name, double val)
+{
+	shader->setUniform(name, val);
+}
+
+void shaderHandle::setParameter(const string& name, glm::vec2 vec)
+{
+	shader->setUniform(name, vec);
+}
+
+void shaderHandle::setParameter(const string& name, glm::vec3 vec)
+{
+	shader->setUniform(name, vec);
+}
+
+void shaderHandle::setParameter(const string& name, glm::vec4 vec)
+{
+	shader->setUniform(name, vec);
+}
+
+void shaderHandle::setParameter(const string& name, glm::mat3 mat)
+{
+	shader->setUniform(name, mat);
+}
+
+void shaderHandle::setParameter(const string& name, glm::mat4 mat)
+{
+	shader->setUniform(name, mat);
 }
