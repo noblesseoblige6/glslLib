@@ -1,5 +1,6 @@
 #pragma once
-#include "programHandle.h"
+#include "Shader.h"
+
 #include <string>
 
 using std::string;

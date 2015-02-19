@@ -30,5 +30,5 @@ void shaderHandle::use()
 
 template<typename T> bool shaderHandle::setUniforms(T val, string& name)
 {
-	shader.program.setUniform(val, name);
+	shader.setUniform(val, name);
 }
