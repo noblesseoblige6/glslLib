@@ -39,6 +39,10 @@ public:
 	void bindAttribLocation(GLuint location, const char* name);
 	void bindFragDataLocation(GLuint location, const char* name);
 
+	bool validateProgram();
+	void printAttributes();
+	void printUniforms();
+	
 	void setUniform(const string&, int);
 	void setUniform(const string&, float);
 	void setUniform(const string&, double);

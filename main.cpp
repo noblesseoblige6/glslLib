@@ -24,6 +24,9 @@ void initProgram()
 	Phandle.loadShader("diffuse.frag", GLSL_SHADER::FRAGMENT);
 	Phandle.linkProgram();
 	Phandle.useProgram();
+
+	Phandle.printAttributes();
+	Phandle.printUniforms();
 }
 
 void setMatrices()
@@ -51,10 +54,12 @@ void display()
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	torus = new VBOTorus(0.7, 0.3, 40, 40);
-	
+	if(Phandle.validateProgram()){
 	setMatrices();
 	torus->render();
+	
 	glutSwapBuffers();
+	}
 }
 
 void resize(int w, int h)
