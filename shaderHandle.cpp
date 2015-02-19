@@ -2,22 +2,33 @@
 
 
 shaderHandle::shaderHandle(void)
-{}
+{
+	init("");
+}
 
 shaderHandle::~shaderHandle(void)
 {}
 
-void shaderHandle::createShader(const string& vertex, const string& fragment)
+shaderHandle::shaderHandle(string& shader)
 {
-programHandle prg;
-prg.loadShader(vertex, GLSL_SHADER::SHADER_TYPE::VERTEX);
-prg.loadShader(fragment, GLSL_SHADER::SHADER_TYPE::FRAGMENT);
-prg.linkProgram();
-
-programs.push_back(prg);
+	init(shader);
+}
+void shaderHandle::init(string&)
+{
+	switch(shader){
+	case "Phong":
+		shader = new PhongShader();
+		break;
+	default:
+		break;
+	}
+}
+void shaderHandle::use()
+{
+	shader.useShader();
 }
 
-void createPreparedShader(GLSL_SHADER::SHADER shader)
+template<typename T> bool shaderHandle::setUniforms(T val, string& name)
 {
-	
+	shader.program.setUniform(val, name);
 }
