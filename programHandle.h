@@ -6,7 +6,7 @@
 #include <string>
 using std::string;
 
-#include <glm\glm.hpp>
+#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace GLSL_SHADER {

@@ -10,6 +10,7 @@ using glm::vec3;
 enum SHADER_NAME{
 	PHONG = 0
 };
+
 enum SHADER_VARIABLE{
 UNIFORM = 0,
 ATTRIBUTE = 1

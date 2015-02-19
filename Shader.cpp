@@ -1,9 +1,6 @@
 #include "Shader.h"
 
-
-Shader::Shader(void)
-{
-}
+Shader::Shader(void){}
 
 Shader::Shader(const string& vert, const string& frag)
 {
@@ -13,9 +10,7 @@ Shader::Shader(const string& vert, const string& frag)
 	useProgram();
 }
 
-Shader::~Shader(void)
-{
-}
+Shader::~Shader(void){}
 
 void Shader::init(const string& vert, const string& frag){
 	loadShader(vert, GLSL_SHADER::VERTEX);

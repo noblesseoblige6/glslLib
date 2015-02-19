@@ -61,27 +61,22 @@ void shaderHandle::setParameter(const string& name, double val)
 {
 	shader->setUniform(name, val);
 }
-
 void shaderHandle::setParameter(const string& name, glm::vec2 vec)
 {
 	shader->setUniform(name, vec);
 }
-
 void shaderHandle::setParameter(const string& name, glm::vec3 vec)
 {
 	shader->setUniform(name, vec);
 }
-
 void shaderHandle::setParameter(const string& name, glm::vec4 vec)
 {
 	shader->setUniform(name, vec);
 }
-
 void shaderHandle::setParameter(const string& name, glm::mat3 mat)
 {
 	shader->setUniform(name, mat);
 }
-
 void shaderHandle::setParameter(const string& name, glm::mat4 mat)
 {
 	shader->setUniform(name, mat);

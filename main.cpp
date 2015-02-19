@@ -9,8 +9,6 @@
 #include "vbotorus.h"
 
 glHandle Ghandle;
-
-//Shader Phandle;
 shaderHandle Phandle;
 VBOTorus* torus;
 
@@ -33,17 +31,17 @@ void setMatrices()
 	Model *= glm::rotate(-35.0f, glm::vec3(1.0f,0.0f,0.0f));
 	Model *= glm::rotate(35.0f, glm::vec3(0.0f,1.0f,0.0f));
 	glm::vec4 lightPos = glm::vec4(5.0f,5.0f,2.0f,1.0f);
-	glm::vec3 materialIntensity = glm::vec3(0.9f, 0.5f, 0.3f);
-	glm::vec3 lightIntensity = glm::vec3(1.0f, 1.0f, 1.0f);
-
+	
 	glm::mat4 modelView = View * Model;
-
-	Phandle.setParameter("ModelViewMatrix", modelView);
-	Phandle.setParameter("MVP", Projection*modelView);
-	Phandle.setParameter("Kd", materialIntensity);
-	Phandle.setParameter("Ld", lightIntensity);
+	Phandle.setParameter("Ka", glm::vec3(0.2, 0.2, 0.2));
+	Phandle.setParameter("Kd", glm::vec3(0.9f, 0.5f, 0.3f));
+	Phandle.setParameter("Ks", glm::vec3(1.0, 1.0, 1.0));
+	Phandle.setParameter("LightIntensity", glm::vec3(0.2, 0.2, 0.2));
 	Phandle.setParameter("LightPosition", View*lightPos);
+	Phandle.setParameter("MVP", Projection*modelView);
+	Phandle.setParameter("ModelViewMatrix", modelView);
 	Phandle.setParameter("NormalMatrix", glm::mat3(  glm::vec3(modelView[0]),  glm::vec3(modelView[1]),  glm::vec3(modelView[2]) ));
+	Phandle.setParameter("Shineness", 100.0);
 }
 
 void display()
