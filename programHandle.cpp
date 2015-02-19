@@ -280,3 +280,63 @@ void programHandle::setUniform(const string& name, glm::mat4 mat)
 		printLog();
 	}
 }
+
+bool programHandle::validateProgram()
+{
+	GLint status;
+	glValidateProgram(program);
+	glGetProgramiv(program, GL_VALIDATE_STATUS, &status);
+	if(status == GL_FALSE){
+		int length;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+		if(length > 0){
+			int written = 0;
+			char* c_log = new char[length];
+			glGetProgramInfoLog(program, length, &written, c_log);
+			logText = c_log;
+			printLog();
+			delete[] c_log;
+		}
+		
+		return false;
+	}
+	return true;
+}
+
+void programHandle::printAttributes()
+{
+	GLint num, length, size, location;
+	GLsizei written;
+	GLenum type;
+	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &length);
+	glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &num);
+
+	char* c_log = new char[length];
+	printf("-----Attributes name and location-----\n");
+	for(int i = 0; i < num; i++){
+		glGetActiveAttrib(program, i, length, &written, &size, &type, c_log);
+		location = glGetAttribLocation(program, c_log);
+		printf("Location: %d  Name: %s\n", location, c_log);
+	}
+	printf("--------------------------------------\n");
+	delete[] c_log;
+}
+
+void programHandle::printUniforms()
+{
+	GLint num, length, size, location;
+	GLsizei written;
+	GLenum type;
+	glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length);
+	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &num);
+
+	char* c_log = new char[length];
+	printf("-----Uniforms name and location-----\n");
+	for(int i = 0; i < num; i++){
+		glGetActiveUniform(program, i, length, &written, &size, &type, c_log);
+		location = glGetUniformLocation(program, c_log);
+		printf("Location: %d  Name: %s\n", location, c_log);
+	}
+	printf("--------------------------------------\n");
+	delete[] c_log;
+}
