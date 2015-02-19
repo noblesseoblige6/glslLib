@@ -4,13 +4,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform2.hpp>
 
-#include "Shader.h"
+#include "shaderHandle.h"
 #include "glHandle.h"
 #include "vbotorus.h"
 
 glHandle Ghandle;
-//programHandle Phandle;
-Shader Phandle;
+
+//Shader Phandle;
+shaderHandle Phandle;
 VBOTorus* torus;
 
 int Height, Width;
@@ -21,10 +22,9 @@ glm::mat4 Model;
 
 void initProgram()
 {
-     Phandle.init("diffuse.vert", "diffuse.frag");
-	Phandle.printAttributes();
-	Phandle.printUniforms();
-
+	Phandle.init(PHONG);
+	Phandle.printVariables(ATTRIBUTE);
+	Phandle.printVariables(UNIFORM);
 }
 
 void setMatrices()
@@ -38,12 +38,12 @@ void setMatrices()
 
 	glm::mat4 modelView = View * Model;
 
-	Phandle.setUniform("ModelViewMatrix", modelView);
-	Phandle.setUniform("MVP", Projection*modelView);
-	Phandle.setUniform("Kd", materialIntensity);
-	Phandle.setUniform("Ld", lightIntensity);
-	Phandle.setUniform("LightPosition", View*lightPos);
-	Phandle.setUniform("NormalMatrix", glm::mat3(  glm::vec3(modelView[0]),  glm::vec3(modelView[1]),  glm::vec3(modelView[2]) ));
+	Phandle.setParameter("ModelViewMatrix", modelView);
+	Phandle.setParameter("MVP", Projection*modelView);
+	Phandle.setParameter("Kd", materialIntensity);
+	Phandle.setParameter("Ld", lightIntensity);
+	Phandle.setParameter("LightPosition", View*lightPos);
+	Phandle.setParameter("NormalMatrix", glm::mat3(  glm::vec3(modelView[0]),  glm::vec3(modelView[1]),  glm::vec3(modelView[2]) ));
 }
 
 void display()

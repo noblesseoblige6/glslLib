@@ -14,4 +14,3 @@ public:
 	void useShader();
 	void printVariables();
 };
-

@@ -37,7 +37,16 @@ void shaderHandle::use()
 
 void shaderHandle::printVariables(SHADER_VARIABLE val)
 {
-	//shader->printVariables(val);
+	switch(val){
+	case ATTRIBUTE:
+		shader->printAttributes();
+		break;
+	case UNIFORM:
+		shader->printUniforms();
+		break;
+	default:
+		break;
+	}
 }
 
 void shaderHandle::setParameter(const string& name, int val)
