@@ -1,6 +1,10 @@
 #include "ModelHandle.h"
 using std::string;
 
+ModelHandle::ModelHandle()
+{
+model = NULL;
+}
 ModelHandle::ModelHandle(MODEL_TYPE type)
 {
 	switch(type){
@@ -13,11 +17,11 @@ ModelHandle::ModelHandle(MODEL_TYPE type)
 
 	}
 }
-ModelHandle::ModelHandle(MODEL_TYPE type, const string& path)
+ModelHandle::ModelHandle(MODEL_TYPE type, const string& path, bool center)
 {
 	switch(type){
 	case MESH:
-		//model = new VBOTorus(0.1f, 0.1f, 50, 50);
+		model = new VBOMesh(path.c_str(), center);
 		break;
 	default:
 		model = NULL;
