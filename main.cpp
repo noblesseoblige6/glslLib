@@ -6,11 +6,11 @@
 
 #include "shaderHandle.h"
 #include "glHandle.h"
-#include "vbotorus.h"
+#include "ModelHandle.h"
 
 glHandle Ghandle;
 shaderHandle Phandle;
-VBOTorus* torus;
+
 
 int Height, Width;
 float Near, Far;
@@ -49,9 +49,9 @@ void display()
   glEnable(GL_DEPTH_TEST);
   glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
   glClearColor(1.0, 1.0, 1.0, 1.0);
-  torus = new VBOTorus(0.7, 0.3, 40, 40);
+  ModelHandle torus(TORUS, 2.0f, 0.5f, 100, 100);
   setMatrices();
-  torus->render();
+  torus.render();
 
   glutSwapBuffers();
 }
