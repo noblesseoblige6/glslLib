@@ -10,7 +10,7 @@
 
 glHandle Ghandle;
 shaderHandle Phandle;
-ModelHandle* org;
+ModelHandle* model;
 
 int Height, Width;
 float Near, Far;
@@ -24,7 +24,7 @@ void initProgram()
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
 	//org = new ModelHandle(MESH, "./mesh/bs_ears.obj", true);
-	org = new ModelHandle(TORUS);
+	model = new ModelHandle(TORUS);
 }
 
 void setMatrices()
@@ -52,7 +52,7 @@ void display()
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	setMatrices();
-	org->render();
+	model->render();
 
 	glutSwapBuffers();
 }
