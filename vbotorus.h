@@ -1,5 +1,4 @@
-#ifndef VBOTORUS_H
-#define VBOTORUS_H
+#pragma once
 #include "Model.h"
 
 class VBOTorus: public Model
@@ -17,5 +16,3 @@ public:
 
 	void render() const;
 };
-
-#endif // VBOTORUS_H

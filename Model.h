@@ -1,8 +1,11 @@
 #pragma once
 
 enum MODEL_TYPE{
-TORUS = 0,
-MESH = 1
+	PLANE = 0,
+	TORUS = 1,
+	CUBE = 2,
+	TEAPOT = 3,
+	MESH = 4
 };
 class Model
 {

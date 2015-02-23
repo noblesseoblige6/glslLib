@@ -23,8 +23,10 @@ void initProgram()
 	Phandle.init(PHONG);
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
-	//org = new ModelHandle(MESH, "./mesh/bs_ears.obj", true);
-	model = new ModelHandle(TORUS);
+	//model = new ModelHandle(MESH, "./mesh/bs_ears.obj", true);
+	model = new ModelHandle(TEAPOT, 10, glm::mat4(1.0f));
+	model->setPram(10, glm::mat4(1.0f));
+	//model = new ModelHandle(PLANE, 10.0f, 10.0f, 100, 100);
 }
 
 void setMatrices()
