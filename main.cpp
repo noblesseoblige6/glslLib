@@ -24,7 +24,7 @@ void initProgram()
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
 	//org = new ModelHandle(MESH, "./mesh/bs_ears.obj", true);
-	model = new ModelHandle(TORUS);
+	model = new ModelHandle(CUBE);
 }
 
 void setMatrices()

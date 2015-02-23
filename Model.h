@@ -2,7 +2,8 @@
 
 enum MODEL_TYPE{
 TORUS = 0,
-MESH = 1
+CUBE = 1,
+MESH = 2
 };
 class Model
 {

@@ -1,8 +1,7 @@
 #pragma once
 #include <string>
 #include "Model.h"
-#include "vbotorus.h"
-#include "VBOMesh.h"
+
 class ModelHandle
 {
 private:

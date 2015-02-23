@@ -1,4 +1,8 @@
 #include "ModelHandle.h"
+#include "vbotorus.h"
+#include "VBOCube.h"
+#include "VBOMesh.h"
+
 using std::string;
 
 ModelHandle::ModelHandle()
@@ -10,6 +14,9 @@ ModelHandle::ModelHandle(MODEL_TYPE type)
 	switch(type){
 	case TORUS:
 		model = new VBOTorus(1.0f, 0.5f, 50, 50);
+		break;
+	case CUBE:
+		model = new VBOCube();
 		break;
 	default:
 		model = NULL;
