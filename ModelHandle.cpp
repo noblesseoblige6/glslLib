@@ -1,9 +1,11 @@
 #include "ModelHandle.h"
 #include "VBOPlane.h"
-#include "vbotorus.h"
+#include "VBOTorus.h"
 #include "VBOCube.h"
 #include "VBOTeapot.h"
 #include "VBOMesh.h"
+
+#include <typeinfo>
 
 using std::string;
 
@@ -75,14 +77,27 @@ ModelHandle::~ModelHandle(void)
 	delete model;
 }
 
-void ModelHandle::setPram(float outerRadius, float innerRadius, int nsides, int nrings)
-{
-	model = new VBOTorus(outerRadius, innerRadius, nsides, nrings);
+void ModelHandle::setPram(float f, float g, int n, int m)
+{	
+	if(typeid (VBOPlane) == typeid (*model)){
+		model = new VBOPlane(f, g, n, m);
+	}
+	else if(typeid (VBOTorus) == typeid (*model)){
+		model = new VBOTorus(f, g, n, m);
+	}
+	else{
+		printf("Type Error! Check parameters\n");
+	}
 }
 
 void ModelHandle::setPram(int grid, glm::mat4 lidTransform)
 {
-	model = new VBOTeapot(grid, lidTransform);
+	if(typeid (VBOTeapot) == typeid (*model)){
+		model = new VBOTeapot(grid, lidTransform);
+	}
+	else{
+		printf("Type Error! Check parameters\n");
+	}
 }
 
 void ModelHandle::render() const
