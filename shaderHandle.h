@@ -8,7 +8,8 @@ using std::string;
 using glm::vec3;
 
 enum SHADER_NAME{
-	PHONG = 0
+	PHONG = 0,
+	TOON = 1
 };
 
 enum SHADER_VARIABLE{

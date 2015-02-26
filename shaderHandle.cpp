@@ -1,5 +1,6 @@
 #include "shaderHandle.h"
 #include "PhongShader.h"
+#include "ToonShader.h"
 
 shaderHandle::shaderHandle(void){}
 
@@ -10,13 +11,7 @@ delete shader;
 
 shaderHandle::shaderHandle(SHADER_NAME shaderName)
 {
-	switch(shaderName){
-	case PHONG:
-		shader = new PhongShader();
-		break;
-	default:
-		break;
-	}
+	init(shaderName);
 }
 
 void shaderHandle::init(SHADER_NAME shaderName)
@@ -24,6 +19,9 @@ void shaderHandle::init(SHADER_NAME shaderName)
 	switch(shaderName){
 	case PHONG:
 		shader = new PhongShader();
+		break;
+	case TOON:
+		shader = new ToonShader();
 		break;
 	default:
 		break;

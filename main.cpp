@@ -20,7 +20,7 @@ glm::mat4 Model;
 
 void initProgram()
 {
-	Phandle.init(PHONG);
+	Phandle.init(TOON);
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
 	//model = ModelHandle(MESH, "./mesh/bs_ears.obj", true);
@@ -38,15 +38,13 @@ void setMatrices()
 	glm::vec4 lightPos = glm::vec4(5.0f,5.0f,2.0f,1.0f);
 
 	glm::mat4 modelView = View * Model;
-	Phandle.setParameter("Ka", glm::vec3(0.2, 0.2, 0.2));
-	Phandle.setParameter("Kd", glm::vec3(0.9f, 0.5f, 0.3f));
-	Phandle.setParameter("Ks", glm::vec3(1.0, 1.0, 1.0));
-	Phandle.setParameter("LightIntensity", glm::vec3(0.2, 0.2, 0.2));
-	Phandle.setParameter("LightPosition", View*lightPos);
+	Phandle.setParameter("Ka", glm::vec3(0.6, 0.6, 0.6));
+	Phandle.setParameter("Kd", glm::vec3(0.9f, 0.6f, 0.8f));
+	Phandle.setParameter("Light.intensity", glm::vec3(0.2, 0.2, 0.2));
+	Phandle.setParameter("Light.position", View*lightPos);
 	Phandle.setParameter("MVP", Projection*modelView);
 	Phandle.setParameter("ModelViewMatrix", modelView);
 	Phandle.setParameter("NormalMatrix", glm::mat3(  glm::vec3(modelView[0]),  glm::vec3(modelView[1]),  glm::vec3(modelView[2]) ));
-	Phandle.setParameter("Shineness", 100.0);
 }
 
 void display()
