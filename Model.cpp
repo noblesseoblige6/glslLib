@@ -5,7 +5,6 @@ Model::Model(void)
 {
 }
 
-
 Model::~Model(void)
 {
 }

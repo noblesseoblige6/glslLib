@@ -9,10 +9,7 @@
 
 using std::string;
 
-ModelHandle::ModelHandle()
-{
-model = NULL;
-}
+ModelHandle::ModelHandle():model(NULL){}
 ModelHandle::ModelHandle(MODEL_TYPE type)
 {
 	switch(type){
@@ -100,6 +97,7 @@ void ModelHandle::setPram(int grid, glm::mat4 lidTransform)
 	}
 }
 
+
 void ModelHandle::render() const
 {
 	if(model == NULL){
@@ -107,4 +105,15 @@ void ModelHandle::render() const
 		return;
 	}
 	model->render();
+}
+
+ModelHandle& ModelHandle::operator=(const ModelHandle& org)
+{
+	//@debug
+	
+	if(this != &org){
+		delete model;
+		model = org.model;
+	}
+	return *this;
 }

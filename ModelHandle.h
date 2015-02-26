@@ -9,6 +9,7 @@ class ModelHandle
 {
 private:
 	Model* model;
+
 public:
 	ModelHandle(void);
 	ModelHandle(MODEL_TYPE);
@@ -19,5 +20,6 @@ public:
 	void setPram(float, float, int, int);
 	void setPram(int, glm::mat4);
 	void render() const;
+	ModelHandle& operator=(const ModelHandle&);
 };
 

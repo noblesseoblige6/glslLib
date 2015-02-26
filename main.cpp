@@ -10,7 +10,7 @@
 
 glHandle Ghandle;
 shaderHandle Phandle;
-ModelHandle* model;
+ModelHandle model;
 
 int Height, Width;
 float Near, Far;
@@ -23,10 +23,11 @@ void initProgram()
 	Phandle.init(PHONG);
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
-	//model = new ModelHandle(MESH, "./mesh/bs_ears.obj", true);
-	model = new ModelHandle(TEAPOT, 10, glm::mat4(1.0f));
-	model->setPram(10, glm::mat4(1.0f));
-	//model = new ModelHandle(PLANE, 10.0f, 10.0f, 100, 100);
+	//model = ModelHandle(MESH, "./mesh/bs_ears.obj", true);
+	//コピーコンストラクタでnewされている?
+	ModelHandle tmp = ModelHandle(TEAPOT, 10, glm::mat4(1.0f));
+	model = tmp;
+	model.setPram(10, glm::mat4(1.0f));
 }
 
 void setMatrices()
@@ -54,7 +55,7 @@ void display()
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	setMatrices();
-	model->render();
+	model.render();
 
 	glutSwapBuffers();
 }
