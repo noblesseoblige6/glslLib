@@ -3,8 +3,12 @@
 in vec3 Position;
 in vec3 Normal;
 
-uniform vec4 LightPosition;
-uniform vec3 LightIntensity;
+struct LightInfo {
+    vec4 position;
+    vec3 intensity;
+    float shininess;
+};
+uniform LightInfo Light;
 
 uniform vec3 Kd;
 uniform vec3 Ks;
@@ -16,10 +20,10 @@ layout(location = 0) out vec4 FragColor;
 vec3 ads(){
 vec3 n = normalize(Normal);
 vec3 v = normalize(-Position);
-vec3 s = normalize(vec3(LightPosition) - Position);
+vec3 s = normalize(vec3(Light.position) - Position);
 vec3 r = reflect(-s, n);
 vec3 h = normalize(v+s);
-return LightIntensity * (Ka + Kd*max(dot(s, n), 0.0) + Ks*pow(max(dot(r, v), 0.0), Shininess));
+return Light.intensity * (Ka + Kd*max(dot(s, n), 0.0) + Ks*pow(max(dot(r, v), 0.0), Light.shininess));
 //return LightIntensity * (Ka + Kd*max(dot(s, n), 0.0)+ Ks*pow(max(dot(h, n), 0.0), Shininess));
 }
 
