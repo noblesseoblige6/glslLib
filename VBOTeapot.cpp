@@ -14,6 +14,9 @@ using glm::mat4;
 
 VBOTeapot::VBOTeapot(int grid, mat4 lidTransform)
 {
+	m_grid = grid;
+	m_lidTransform = lidTransform;
+
 	int verts = 32 * (grid + 1) * (grid + 1);
 	faces = grid * grid * 32;
 	float * v = new float[ verts * 3 ];
@@ -264,6 +267,12 @@ vec3 VBOTeapot::evaluateNormal( int gridU, int gridV, float *B, float *dB, vec3 
 		}
 	}
 	return glm::normalize( glm::cross( du, dv ) );
+}
+
+void VBOTeapot::getParam(int& _grid, glm::mat4 _lidTransform)
+{
+	_grid = m_grid;
+	_lidTransform = m_lidTransform;
 }
 
 void VBOTeapot::render() const {

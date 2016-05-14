@@ -9,7 +9,15 @@
 
 using std::string;
 
-ModelHandle::ModelHandle():model(NULL){}
+ModelHandle::ModelHandle() : model(NULL){}
+
+//ModelHandle::ModelHandle(const ModelHandle& org)
+//{
+//	if (this != &org) {
+//		model = org.model;
+//	}
+//}
+
 ModelHandle::ModelHandle(MODEL_TYPE type)
 {
 	switch(type){
@@ -113,7 +121,12 @@ ModelHandle& ModelHandle::operator=(const ModelHandle& org)
 	
 	if(this != &org){
 		delete model;
-		model = org.model;
+		if (typeid(*org.model) == typeid (VBOTeapot)) {
+			int grid;
+			glm::mat4 lidTransform;
+			((VBOTeapot*)org.model)->getParam(grid, lidTransform);
+			model = new VBOTeapot(grid, lidTransform);
+		}
 	}
 	return *this;
 }

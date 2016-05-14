@@ -5,6 +5,9 @@
 class VBOTeapot : public Model
 {
 private:
+	int m_grid;
+	glm::mat4 m_lidTransform;
+
 	unsigned int vaoHandle;
 	unsigned int faces;
 
@@ -27,6 +30,7 @@ private:
 
 public:
 	VBOTeapot(int grid, glm::mat4 lidTransform);
+	void getParam(int& _grid, glm::mat4 _lidTransform);
 
 	void render() const;
 };

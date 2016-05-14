@@ -24,17 +24,13 @@ void initProgram()
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
 	//model = ModelHandle(MESH, "./mesh/bs_ears.obj", true);
-	//コピーコンストラクタでnewされている?
-	ModelHandle tmp = ModelHandle(TEAPOT, 10, glm::mat4(1.0f));
-	model = tmp;
-	model.setPram(10, glm::mat4(1.0f));
+	model = ModelHandle(TEAPOT, 100, glm::mat4(1.0f));;
 }
 
 void setMatrices()
 {
-	Model = glm::mat4(1.0f);
-	Model *= glm::rotate(-35.0f, glm::vec3(1.0f,0.0f,0.0f));
-	Model *= glm::rotate(35.0f, glm::vec3(0.0f,1.0f,0.0f));
+	Model = glm::mat4(1.0);
+	Model *= glm::rotate(-45.0f, glm::vec3(1.0f,0.0f,0.0f));
 	glm::vec4 lightPos = glm::vec4(5.0f,5.0f,2.0f,1.0f);
 
 	glm::mat4 modelView = View * Model;
@@ -65,7 +61,7 @@ void resize(int w, int h)
 	Near = 0.1f;
 	Far = 100.0f;
 
-	glViewport(0,0,w,h);	
+	glViewport(0, 0, w, h);	
 	Projection = glm::perspective(45.0f, (float)Height/Width, Near, Far);
 	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
