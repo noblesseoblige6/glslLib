@@ -1,13 +1,13 @@
 #pragma once
-#include "Shader.h"
+#include "../Shader.h"
 
 #include <glm/glm.hpp>
 #include <string>
 
-#include "PhongShader.h"
-#include "ToonShader.h"
-#include "DepthShadow.h"
-#include "SSAO.h"
+#include "../Technique/Phong/PhongShader.h"
+#include "../Technique/Toon/ToonShader.h"
+#include "../Technique/DepthShadow/DepthShadow.h"
+#include "../Technique/SSAO/SSAO.h"
 
 
 using std::string;

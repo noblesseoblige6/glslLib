@@ -1,6 +1,6 @@
 #pragma once
-#include "Shader.h"
-#include "Frustum.h"
+#include "../../shader.h"
+#include "../../frustum.h"
 
 class DepthShadow : public Shader
 {

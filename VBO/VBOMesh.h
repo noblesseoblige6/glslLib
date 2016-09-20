@@ -1,7 +1,7 @@
 #ifndef VBOMESH_H
 #define VBOMESH_H
 
-#include "Model.h"
+#include "../Model.h"
 
 #include <vector>
 using std::vector;

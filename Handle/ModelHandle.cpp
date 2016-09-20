@@ -1,9 +1,9 @@
-#include "ModelHandle.h"
-#include "VBOPlane.h"
-#include "VBOTorus.h"
-#include "VBOCube.h"
-#include "VBOTeapot.h"
-#include "VBOMesh.h"
+#include "modelHandle.h"
+#include "../VBO/VBOPlane.h"
+#include "../VBO/VBOTorus.h"
+#include "../VBO/VBOCube.h"
+#include "../VBO/VBOTeapot.h"
+#include "../VBO/VBOMesh.h"
 
 #include <typeinfo>
 

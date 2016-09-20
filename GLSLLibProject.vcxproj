@@ -99,43 +99,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DepthShadow.cpp" />
     <ClCompile Include="frustum.cpp" />
-    <ClCompile Include="glHandle.cpp" />
+    <ClCompile Include="Handle\glHandle.cpp" />
+    <ClCompile Include="Handle\ModelHandle.cpp" />
+    <ClCompile Include="Handle\programHandle.cpp" />
+    <ClCompile Include="Handle\shaderHandle.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="ModelHandle.cpp" />
-    <ClCompile Include="PhongShader.cpp" />
-    <ClCompile Include="programHandle.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="shaderHandle.cpp" />
-    <ClCompile Include="SSAO.cpp" />
-    <ClCompile Include="ToonShader.cpp" />
-    <ClCompile Include="VBOCube.cpp" />
-    <ClCompile Include="VBOMesh.cpp" />
-    <ClCompile Include="VBOPlane.cpp" />
-    <ClCompile Include="VBOTeapot.cpp" />
-    <ClCompile Include="vbotorus.cpp" />
+    <ClCompile Include="Technique\Depthshadow\DepthShadow.cpp" />
+    <ClCompile Include="Technique\Phong\PhongShader.cpp" />
+    <ClCompile Include="Technique\SSAO\SSAO.cpp" />
+    <ClCompile Include="Technique\Toon\ToonShader.cpp" />
+    <ClCompile Include="VBO\VBOCube.cpp" />
+    <ClCompile Include="VBO\VBOMesh.cpp" />
+    <ClCompile Include="VBO\VBOPlane.cpp" />
+    <ClCompile Include="VBO\VBOTeapot.cpp" />
+    <ClCompile Include="VBO\vbotorus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h" />
-    <ClInclude Include="DepthShadow.h" />
     <ClInclude Include="frustum.h" />
-    <ClInclude Include="glHandle.h" />
+    <ClInclude Include="Handle\glHandle.h" />
+    <ClInclude Include="Handle\ModelHandle.h" />
+    <ClInclude Include="Handle\programHandle.h" />
+    <ClInclude Include="Handle\shaderHandle.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="ModelHandle.h" />
-    <ClInclude Include="PhongShader.h" />
-    <ClInclude Include="programHandle.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="shaderHandle.h" />
-    <ClInclude Include="SSAO.h" />
-    <ClInclude Include="TeapotData.h" />
-    <ClInclude Include="ToonShader.h" />
-    <ClInclude Include="VBOCube.h" />
-    <ClInclude Include="VBOMesh.h" />
-    <ClInclude Include="VBOPlane.h" />
-    <ClInclude Include="VBOTeapot.h" />
-    <ClInclude Include="vbotorus.h" />
+    <ClInclude Include="Technique\Depthshadow\DepthShadow.h" />
+    <ClInclude Include="Technique\Phong\PhongShader.h" />
+    <ClInclude Include="Technique\SSAO\SSAO.h" />
+    <ClInclude Include="Technique\Toon\ToonShader.h" />
+    <ClInclude Include="VBO\TeapotData.h" />
+    <ClInclude Include="VBO\VBOCube.h" />
+    <ClInclude Include="VBO\VBOMesh.h" />
+    <ClInclude Include="VBO\VBOPlane.h" />
+    <ClInclude Include="VBO\VBOTeapot.h" />
+    <ClInclude Include="VBO\vbotorus.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

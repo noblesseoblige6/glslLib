@@ -13,98 +13,92 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="Source Files\SSAO">
-      <UniqueIdentifier>{d0c1e52c-caa4-4c98-921c-cc6c108d0afd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\VBO">
       <UniqueIdentifier>{9f969c14-c8db-44a5-9c0e-88fc90e3c4af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Technique">
+      <UniqueIdentifier>{04ec1686-817b-47e8-b049-0559504c6c8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Technique\SSAO">
+      <UniqueIdentifier>{d0c1e52c-caa4-4c98-921c-cc6c108d0afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Technique\Toon">
+      <UniqueIdentifier>{74618f31-2fa8-4e68-bf15-d205c3646225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Technique\Phong">
+      <UniqueIdentifier>{b22151ca-89f9-4259-95ab-8b0ca2a7c246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Handle">
+      <UniqueIdentifier>{593eae06-aca6-41c3-ad25-57b734259d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Handle">
+      <UniqueIdentifier>{890403d9-b7d4-4b9a-8d06-9b8b08cac572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\VBO">
+      <UniqueIdentifier>{bb800781-351e-4c1a-a997-610477a1a190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Technique\DepthShadow">
+      <UniqueIdentifier>{ad8411cc-006c-444a-ac67-aab9fdfe4b8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="glHandle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModelHandle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PhongShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="programHandle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shaderHandle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ToonShader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DepthShadow.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Technique\SSAO\SSAO.cpp">
+      <Filter>Source Files\Technique\SSAO</Filter>
     </ClCompile>
     <ClCompile Include="frustum.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SSAO.cpp">
-      <Filter>Source Files\SSAO</Filter>
+    <ClCompile Include="Handle\glHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
     </ClCompile>
-    <ClCompile Include="VBOCube.cpp">
+    <ClCompile Include="Handle\ModelHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle\programHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle\shaderHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="VBO\VBOCube.cpp">
       <Filter>Source Files\VBO</Filter>
     </ClCompile>
-    <ClCompile Include="VBOMesh.cpp">
+    <ClCompile Include="VBO\VBOMesh.cpp">
       <Filter>Source Files\VBO</Filter>
     </ClCompile>
-    <ClCompile Include="VBOPlane.cpp">
+    <ClCompile Include="VBO\VBOPlane.cpp">
       <Filter>Source Files\VBO</Filter>
     </ClCompile>
-    <ClCompile Include="VBOTeapot.cpp">
+    <ClCompile Include="VBO\VBOTeapot.cpp">
       <Filter>Source Files\VBO</Filter>
     </ClCompile>
-    <ClCompile Include="vbotorus.cpp">
+    <ClCompile Include="VBO\vbotorus.cpp">
       <Filter>Source Files\VBO</Filter>
+    </ClCompile>
+    <ClCompile Include="Technique\Depthshadow\DepthShadow.cpp">
+      <Filter>Source Files\Technique\DepthShadow</Filter>
+    </ClCompile>
+    <ClCompile Include="Technique\Phong\PhongShader.cpp">
+      <Filter>Source Files\Technique\Phong</Filter>
+    </ClCompile>
+    <ClCompile Include="Technique\Toon\ToonShader.cpp">
+      <Filter>Source Files\Technique\Toon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="glHandle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModelHandle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhongShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="programHandle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="shaderHandle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TeapotData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ToonShader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vbotorus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DepthShadow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="frustum.h">
@@ -113,20 +107,47 @@
     <ClInclude Include="defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SSAO.h">
-      <Filter>Source Files\SSAO</Filter>
+    <ClInclude Include="Technique\SSAO\SSAO.h">
+      <Filter>Source Files\Technique\SSAO</Filter>
     </ClInclude>
-    <ClInclude Include="VBOCube.h">
-      <Filter>Source Files\VBO</Filter>
+    <ClInclude Include="Handle\glHandle.h">
+      <Filter>Header Files\Handle</Filter>
     </ClInclude>
-    <ClInclude Include="VBOMesh.h">
-      <Filter>Source Files\VBO</Filter>
+    <ClInclude Include="Handle\ModelHandle.h">
+      <Filter>Header Files\Handle</Filter>
     </ClInclude>
-    <ClInclude Include="VBOPlane.h">
-      <Filter>Source Files\VBO</Filter>
+    <ClInclude Include="Handle\programHandle.h">
+      <Filter>Header Files\Handle</Filter>
     </ClInclude>
-    <ClInclude Include="VBOTeapot.h">
-      <Filter>Source Files\VBO</Filter>
+    <ClInclude Include="Handle\shaderHandle.h">
+      <Filter>Header Files\Handle</Filter>
+    </ClInclude>
+    <ClInclude Include="VBO\TeapotData.h">
+      <Filter>Header Files\VBO</Filter>
+    </ClInclude>
+    <ClInclude Include="VBO\VBOCube.h">
+      <Filter>Header Files\VBO</Filter>
+    </ClInclude>
+    <ClInclude Include="VBO\VBOMesh.h">
+      <Filter>Header Files\VBO</Filter>
+    </ClInclude>
+    <ClInclude Include="VBO\VBOPlane.h">
+      <Filter>Header Files\VBO</Filter>
+    </ClInclude>
+    <ClInclude Include="VBO\VBOTeapot.h">
+      <Filter>Header Files\VBO</Filter>
+    </ClInclude>
+    <ClInclude Include="VBO\vbotorus.h">
+      <Filter>Header Files\VBO</Filter>
+    </ClInclude>
+    <ClInclude Include="Technique\Depthshadow\DepthShadow.h">
+      <Filter>Source Files\Technique\DepthShadow</Filter>
+    </ClInclude>
+    <ClInclude Include="Technique\Phong\PhongShader.h">
+      <Filter>Source Files\Technique\Phong</Filter>
+    </ClInclude>
+    <ClInclude Include="Technique\Toon\ToonShader.h">
+      <Filter>Source Files\Technique\Toon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

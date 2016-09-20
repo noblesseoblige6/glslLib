@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "Model.h"
+#include "../Model.h"
 
 class VBOTeapot : public Model
 {

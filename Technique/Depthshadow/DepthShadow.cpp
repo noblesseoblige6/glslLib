@@ -3,8 +3,8 @@
 DepthShadow::DepthShadow()
 {
 
-	loadShader("./shader/ShadowMap/DepthShadow.vert", GLSL_SHADER::VERTEX);
-	loadShader("./shader/ShadowMap/DepthShadow.frag", GLSL_SHADER::FRAGMENT);
+	loadShader("../../shader/ShadowMap/DepthShadow.vert", GLSL_SHADER::VERTEX);
+	loadShader("../../shader/ShadowMap/DepthShadow.frag", GLSL_SHADER::FRAGMENT);
 	linkProgram();
 	useProgram();
 

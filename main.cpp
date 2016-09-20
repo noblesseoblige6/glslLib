@@ -4,9 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform2.hpp>
 
-#include "shaderHandle.h"
-#include "glHandle.h"
-#include "ModelHandle.h"
+#include "Handle/shaderHandle.h"
+#include "Handle/glHandle.h"
+#include "Handle/modelHandle.h"
 
 glHandle Ghandle;
 shaderHandle Phandle;
@@ -28,7 +28,7 @@ void initProgram()
 	
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
-	model[0] = ModelHandle(MESH, "./mesh/bs_ears.obj", true);
+	model[0] = ModelHandle(MESH, "./Mesh/bs_ears.obj", true);
 	//model[0] = ModelHandle(TEAPOT, 10, glm::mat4(1.0));
 	//model[1] = ModelHandle(PLANE);
 
