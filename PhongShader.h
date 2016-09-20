@@ -6,5 +6,8 @@ class PhongShader : public Shader
 public:
 	PhongShader(void);
 	~PhongShader(void);
+
+	void BeginRender();
+	void EndRender();
 };
 

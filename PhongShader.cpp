@@ -12,3 +12,14 @@ PhongShader::PhongShader(void)
 PhongShader::~PhongShader(void)
 {
 }
+
+void PhongShader::BeginRender(void)
+{
+	glEnable(GL_DEPTH_TEST);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void PhongShader::EndRender()
+{
+}

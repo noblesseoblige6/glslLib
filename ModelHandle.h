@@ -12,7 +12,7 @@ private:
 
 public:
 	ModelHandle(void);
-	//ModelHandle(const ModelHandle&);
+	ModelHandle(const ModelHandle&);
 	ModelHandle(MODEL_TYPE);
 	ModelHandle(MODEL_TYPE, float, float, int, int);
 	ModelHandle(MODEL_TYPE, int, glm::mat4);

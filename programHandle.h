@@ -52,5 +52,7 @@ public:
 	void setUniform(const string&, glm::vec4);
 	void setUniform(const string&, glm::mat3);
 	void setUniform(const string&, glm::mat4);
+	int getProgram();
+	int getProgram() const;
 };
 

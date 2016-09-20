@@ -1,6 +1,4 @@
 #include "shaderHandle.h"
-#include "PhongShader.h"
-#include "ToonShader.h"
 
 shaderHandle::shaderHandle(void){}
 
@@ -23,6 +21,10 @@ void shaderHandle::init(SHADER_NAME shaderName)
 	case TOON:
 		shader = new ToonShader();
 		break;
+	case DEPTHSHADOW:
+		shader = new DepthShadow();
+	case AO:
+		shader = new SSAO(256, 256);
 	default:
 		break;
 	}
@@ -78,4 +80,9 @@ void shaderHandle::setParameter(const string& name, glm::mat3 mat)
 void shaderHandle::setParameter(const string& name, glm::mat4 mat)
 {
 	shader->setUniform(name, mat);
+}
+
+Shader* shaderHandle::getShader()
+{
+	return shader;
 }

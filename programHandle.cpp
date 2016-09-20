@@ -2,6 +2,7 @@
 
 #include<cstdio>
 #include <sys/stat.h>
+#include <iostream>
 #include <fstream>
 
 using std::ifstream;
@@ -339,4 +340,14 @@ void programHandle::printUniforms()
 	}
 	printf("--------------------------------------\n");
 	delete[] c_log;
+}
+
+int programHandle::getProgram()
+{
+	return program;
+}
+
+int programHandle::getProgram() const
+{
+	return program;
 }

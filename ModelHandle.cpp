@@ -11,12 +11,24 @@ using std::string;
 
 ModelHandle::ModelHandle() : model(NULL){}
 
-//ModelHandle::ModelHandle(const ModelHandle& org)
-//{
-//	if (this != &org) {
-//		model = org.model;
-//	}
-//}
+ModelHandle::ModelHandle(const ModelHandle& org)
+{
+	if (this != &org) {
+		delete model;
+		if (typeid(*org.model) == typeid (VBOTeapot)) {
+			int grid;
+			glm::mat4 lidTransform;
+			((VBOTeapot*)org.model)->getParam(grid, lidTransform);
+			model = new VBOTeapot(grid, lidTransform);
+		}
+		if (typeid(*org.model) == typeid (VBOPlane)) {
+			float xsize, zsize;
+			int xdivs, zdivs;
+			((VBOPlane*)org.model)->getParam(xsize, zsize, xdivs, zdivs);
+			model = new VBOPlane(xsize, zsize, xdivs, zdivs);
+		}
+	}
+}
 
 ModelHandle::ModelHandle(MODEL_TYPE type)
 {
@@ -117,8 +129,6 @@ void ModelHandle::render() const
 
 ModelHandle& ModelHandle::operator=(const ModelHandle& org)
 {
-	//@debug
-	
 	if(this != &org){
 		delete model;
 		if (typeid(*org.model) == typeid (VBOTeapot)) {
@@ -126,6 +136,16 @@ ModelHandle& ModelHandle::operator=(const ModelHandle& org)
 			glm::mat4 lidTransform;
 			((VBOTeapot*)org.model)->getParam(grid, lidTransform);
 			model = new VBOTeapot(grid, lidTransform);
+		}
+		else if (typeid(*org.model) == typeid (VBOPlane)) {
+			float xsize, zsize;
+			int xdivs, zdivs;
+			((VBOPlane*)org.model)->getParam(xsize, zsize, xdivs, zdivs);
+			model = new VBOPlane(xsize, zsize, xdivs, zdivs);
+		}
+		else {
+			model = new VBOMesh("./mesh/bs_ears.obj", true);
+			//model = org.model;
 		}
 	}
 	return *this;

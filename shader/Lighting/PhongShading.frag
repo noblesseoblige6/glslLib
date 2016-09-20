@@ -1,32 +1,38 @@
-#version 400
+#version 440
 
 in vec3 Position;
 in vec3 Normal;
 
-struct LightInfo {
-    vec4 position;
-    vec3 intensity;
-    float shininess;
+struct MaterialInfo 
+{
+	vec3 Kd;
+	vec3 Ks;
+	vec3 Ka;
+    float Shininess;
 };
-uniform LightInfo Light;
 
-uniform vec3 Kd;
-uniform vec3 Ks;
-uniform vec3 Ka;
-uniform float Shininess;
+struct LightInfo 
+{
+    vec4 Position;
+    vec3 Intensity;
+};
+
+uniform LightInfo Light;
+uniform MaterialInfo Material;
 
 layout(location = 0) out vec4 FragColor;
 
-vec3 ads(){
-vec3 n = normalize(Normal);
-vec3 v = normalize(-Position);
-vec3 s = normalize(vec3(Light.position) - Position);
-vec3 r = reflect(-s, n);
-vec3 h = normalize(v+s);
-return Light.intensity * (Ka + Kd*max(dot(s, n), 0.0) + Ks*pow(max(dot(r, v), 0.0), Light.shininess));
-//return LightIntensity * (Ka + Kd*max(dot(s, n), 0.0)+ Ks*pow(max(dot(h, n), 0.0), Shininess));
+vec3 ads()
+{
+    vec3 s = normalize( vec3(Light.Position) - Position );
+    vec3 v = normalize( -Position );
+    vec3 h = normalize( v + s );
+
+    return Light.Intensity * (Material.Ka + Material.Kd * max(dot(s, Normal), 0.0));// + Material.Ks * pow(max(dot(h, Normal), 0.0), Material.Shininess));
 }
 
-void main(){
-FragColor = vec4(ads(), 1.0);
+void main()
+{
+    FragColor = vec4(ads(), 1.0);
 }
+

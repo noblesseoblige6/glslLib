@@ -8,6 +8,11 @@
 
 VBOPlane::VBOPlane(float xsize, float zsize, int xdivs, int zdivs)
 {
+	m_xsize = xsize;
+	m_zsize = zsize;
+	m_xdivs = xdivs;
+	m_zdivs = zdivs;
+
 	glGenVertexArrays( 1, &vaoHandle );
 	glBindVertexArray(vaoHandle);
 	faces = xdivs * zdivs;
@@ -75,6 +80,13 @@ VBOPlane::VBOPlane(float xsize, float zsize, int xdivs, int zdivs)
 	delete [] el;
 }
 
+void VBOPlane::getParam(float& _xsize, float& _zsize, int& _xdivs, int& _zdivs)
+{
+	_xsize = m_xsize;
+	_zsize = m_zsize;
+	_xdivs = m_xdivs;
+	_zdivs = m_zdivs;
+}
 void VBOPlane::render() const {
 	glBindVertexArray(vaoHandle);
 	glVertexAttrib3f(1, 0.0f, 1.0f, 0.0f);  // Constant normal for all verts
