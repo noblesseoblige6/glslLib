@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Technique\DepthShadow">
       <UniqueIdentifier>{ad8411cc-006c-444a-ac67-aab9fdfe4b8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Mouse">
+      <UniqueIdentifier>{e73fc6f2-83d8-4f2f-b3fd-c9b67fe05149}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="Technique\Toon\ToonShader.cpp">
       <Filter>Source Files\Technique\Toon</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>Source Files\Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="Technique\Toon\ToonShader.h">
       <Filter>Source Files\Technique\Toon</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>Source Files\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

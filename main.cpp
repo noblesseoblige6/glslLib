@@ -8,10 +8,14 @@
 #include "Handle/glHandle.h"
 #include "Handle/modelHandle.h"
 
+#include "Quaternion.h"
+
 glHandle Ghandle;
 shaderHandle Phandle;
 shaderHandle PhandleTest;
 ModelHandle model[2];
+
+Quaternion Quat;
 
 int Height, Width;
 float Near, Far;
@@ -32,6 +36,8 @@ void initProgram()
 	//model[0] = ModelHandle(TEAPOT, 10, glm::mat4(1.0));
 	//model[1] = ModelHandle(PLANE);
 
+	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	Quat.Init();
 }
 
 void setMatrices(int idx)
@@ -43,15 +49,15 @@ void setMatrices(int idx)
 		//Model *= glm::rotate(theta, glm::vec3(0.0f, 1.0f, 0.0f));
 		Model *= glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	}
-
-	glm::mat4 modelView = View * Model;
+	glm::mat4 view = View * Quat.GetRotation();
+	glm::mat4 modelView = view * Model;
 	Phandle.setParameter("Material.Ka", glm::vec3(0.2f, 0.2f, 0.2f));
 	Phandle.setParameter("Material.Kd", glm::vec3(0.6f, 0.9f, 0.8f));
 	Phandle.setParameter("Material.Ks", glm::vec3(0.0f, 0.0f, 0.0f));
 	Phandle.setParameter("Material.Shineness", 100.0f);
 
 	Phandle.setParameter("Light.Intensity", glm::vec3(0.9f, 0.9f, 0.9f));
-	Phandle.setParameter("Light.Position", View*LightPos);
+	Phandle.setParameter("Light.Position", view*LightPos);
 
 	Phandle.setParameter("MVP", Projection*modelView);
 	Phandle.setParameter("ProjectionMatrix", Projection);
@@ -68,6 +74,7 @@ void display()
 	SSAO* pRenderTech = (SSAO*)Phandle.getShader();	
 	pRenderTech->useShader();
 
+	
 	pRenderTech->BeginRenderDepth();
 	{
 		for (int i = 0; i < 1; ++i) {
@@ -102,8 +109,7 @@ void resize(int w, int h)
 
 	glViewport(0, 0, w, h);
 	Projection = glm::perspective(45.0f, (float)Width / (float)Height, Near, Far);
-	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
+	
 	SSAO* pRenderTech = (SSAO*)Phandle.getShader();
 	pRenderTech->Resize(Width, Height);
 }
@@ -115,6 +121,43 @@ void key(unsigned char key, int x, int y)
 		exit(EXIT_SUCCESS);
 		break;
 	}
+}
+
+void idle(void)
+{
+	glutPostRedisplay();
+}
+
+void mouse(int button, int state, int x, int y)
+{
+	switch (button) {
+	case GLUT_LEFT_BUTTON:
+		switch (state) {
+		case GLUT_DOWN:
+			Quat.StartRotation(x, y);
+			glutIdleFunc(idle);
+			break;
+		case GLUT_UP:
+			glutIdleFunc(NULL);
+			Quat.EndRotation();
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void motion(int x, int y) 
+{
+	Quat.Rotation(x, y, Width, Height);
+}
+
+void mouseWheel(int wheel_number, int direction, int x, int y)
+{
+	//TODO
 }
 
 int main(int argc, char* argv[])
@@ -129,9 +172,11 @@ int main(int argc, char* argv[])
 	glutDisplayFunc(display);
 	glutReshapeFunc(resize);
 	glutKeyboardFunc(key);
+	glutMouseFunc(mouse);
+	glutMotionFunc(motion);
+	glutMouseWheelFunc(mouseWheel);
 	Ghandle.init();
 	initProgram();
 	glutMainLoop();
 	return 0;
 }
-

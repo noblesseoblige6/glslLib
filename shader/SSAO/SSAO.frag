@@ -132,8 +132,3 @@ void main()
   // This will call either shadeWithShadow or recordDepth
   RenderPass();
 }
-
-
-
-
-
