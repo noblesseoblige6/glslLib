@@ -22,6 +22,8 @@ uniform sampler2D PositionMap, NormalMap, AlbedoMap, DepthMap;
 uniform vec4 SamplePoints[256];
 uniform vec2 Viewport;
 
+uniform int NumSamples;
+
 in vec3 Position;
 in vec3 Normal;
 in vec2 TexCoord;
@@ -53,43 +55,7 @@ vec3 phongModel(vec3 pos, vec3 norm, vec3 albedo)
 subroutine void RenderPassType();
 subroutine uniform RenderPassType RenderPass;
 subroutine (RenderPassType)
-  void render(){
-    // Find ambient
-    vec3 ambient = Light.Intensity * Material.Ka;
-
-    // Find diffuse and specular
-    vec3 pos = vec3(texture(PositionMap, TexCoord));
-    vec3 normal = vec3(texture(NormalMap, TexCoord));
-    vec3 albedoColor = vec3(texture(AlbedoMap, TexCoord));
-
-    vec3 diffAndSpec = phongModel(pos, normal, albedoColor);
-
-    //
-    vec4 p = texture2D(DepthMap, TexCoord);
-    // vec4 p = texture2D(DepthMap, gl_FragCoord.xy/Viewport);
-    int count = 0;
-
-    for(int i = 0; i < 256; ++i)
-    {
-      vec4 q = ProjectionMatrix * (p + SamplePoints[i]);
-
-      // Convert to texture coord
-      q = q * 0.5 / q.w + 0.5;
-
-      // Compare the depth of textre and sample points
-      if(q.z < texture2D(DepthMap, q.xy).z)
-        ++count;
-    }
-
-    float ssao = clamp(float(count) / 256.0, 0.0, 1.0);
-
-    // FragColor = vec4(diffAndSpec*ssao + ambient, 1.0);
-    FragColor = vec4(diffAndSpec + ambient, 1.0);
-    //FragColor = texture2D(DepthMap, gl_FragCoord.xy/Viewport);
-  }
-
-  subroutine (RenderPassType)
-void renderDepth()
+void renderGBuffer()
 {
   // Do nothing, depth will be written automatically
   PositionData = Position;
@@ -97,8 +63,8 @@ void renderDepth()
   ColorData = Material.Kd;
 }
 
-  subroutine (RenderPassType)
-void renderDebug()
+subroutine (RenderPassType)
+void render()
 {
   vec3 pos    = vec3(texture(PositionMap, TexCoord));
   vec3 normal = vec3(texture(NormalMap, TexCoord));
@@ -110,7 +76,7 @@ void renderDebug()
   vec4 p = texture(DepthMap, TexCoord);
 
   int count = 0;
-  for(int i = 0; i < 256; ++i)
+  for(int i = 0; i < NumSamples; ++i)
   {
     vec4 q = ProjectionMatrix * (p + SamplePoints[i]);
 
@@ -122,9 +88,10 @@ void renderDebug()
       ++count;
   }
 
-  float a = clamp(float(count) * 2.0 / 256.0, 0.0, 1.0);
+  float a = clamp(float(count) * 2.0 / float(NumSamples), 0.0, 1.0);
 
-  FragColor= vec4(vec3(a), 1.0);
+  // FragColor= vec4(diffAndSpec + ambient * a, 1.0);
+  FragColor= vec4(ambient * a, 1.0);
 }
 
 void main()

@@ -14,12 +14,11 @@ SSAO::SSAO(const int& w, const int& h)
 	linkProgram();
 	useProgram();
 
-	renderPassIndex1_vs = glGetSubroutineIndex(getProgram(), GL_VERTEX_SHADER, "render");
-	renderPassIndexDebug_vs = glGetSubroutineIndex(getProgram(), GL_VERTEX_SHADER, "renderDebug");
+	renderPass_GBuufer_vs = glGetSubroutineIndex(getProgram(), GL_VERTEX_SHADER, "renderGBuffer");
+	renderPass_Render_vs = glGetSubroutineIndex(getProgram(), GL_VERTEX_SHADER, "render");
 
-	renderPassIndex1_fs = glGetSubroutineIndex(getProgram(), GL_FRAGMENT_SHADER, "renderDepth");
-	renderPassIndex2_fs = glGetSubroutineIndex(getProgram(), GL_FRAGMENT_SHADER, "render");
-	renderPassIndexDebug_fs = glGetSubroutineIndex(getProgram(), GL_FRAGMENT_SHADER, "renderDebug");
+	renderPass_GBuufer_fs = glGetSubroutineIndex(getProgram(), GL_FRAGMENT_SHADER, "renderGBuffer");
+	renderPass_Render_fs = glGetSubroutineIndex(getProgram(), GL_FRAGMENT_SHADER, "render");
 
 	depthWidth = w;
 	depthHeight = h;
@@ -40,7 +39,10 @@ SSAO::SSAO(const int& w, const int& h)
 	std::uniform_real_distribution<double> rnd(-1.0, 1.0);
 	std::uniform_real_distribution<double> ang(0.0, 2.0*M_PI);
 
-	for (int i = 0; i < 256; ++i)
+	int numSamples = 256;
+	setUniform("NumSamples", numSamples);
+
+	for (int i = 0; i < numSamples; ++i)
 	{
 		float u = wgt(mt);
 		float r = 2.0f * u;
@@ -55,7 +57,7 @@ SSAO::SSAO(const int& w, const int& h)
 		samplingPoints[i].z = r * v;
 		samplingPoints[i].w = 1.0f;
 
-		char str[256];
+		char str[128];
 		sprintf(str, "SamplePoints[%d]", i);
 		setUniform(str, samplingPoints[i]);
 	}
@@ -158,7 +160,7 @@ bool SSAO::InitFBO()
 	return true;
 }
 
-void SSAO::BeginRenderDepth()
+void SSAO::BeginRenderGBuffer()
 {	
 	glBindFramebuffer(GL_FRAMEBUFFER, depthFBO);
 
@@ -166,47 +168,28 @@ void SSAO::BeginRenderDepth()
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-	glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &renderPassIndex1_vs);
-	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &renderPassIndex1_fs);
+	glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &renderPass_GBuufer_vs);
+	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &renderPass_GBuufer_fs);
 }
 
-void SSAO::EndRenderDepth()
+void SSAO::EndRenderGBuffer()
 {
 	glFinish();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 }
 
-void SSAO::BeginRender()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, NULL);
-
-	glBindTexture(GL_TEXTURE_2D, depthTex);
-
-	glEnable(GL_DEPTH_TEST);
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-	glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &renderPassIndex1_vs);
-	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &renderPassIndex2_fs);
-}
-
-void SSAO::EndRender()
-{
-	glFinish();
-}
-
-void SSAO::DebugRender()
+void SSAO::Render()
 {
 	glViewport(0, 0, depthWidth, depthHeight);
 
 	glDisable(GL_DEPTH_TEST);
 
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-	glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &renderPassIndexDebug_vs);
-	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &renderPassIndexDebug_fs);
+	glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &renderPass_Render_vs);
+	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &renderPass_Render_fs);
 
 	glBindTexture(GL_TEXTURE_2D, positionTex);
 	glBindTexture(GL_TEXTURE_2D, normalTex);

@@ -16,7 +16,7 @@ subroutine void RenderPassType();
 subroutine uniform RenderPassType RenderPass;
 
 subroutine (RenderPassType)
-void render()
+void renderGBuffer()
 {
     Position = vec3(ModelViewMatrix * vec4(VertexPosition, 1.0));
     Normal = normalize( NormalMatrix * VertexNormal );
@@ -25,7 +25,7 @@ void render()
 }
 
 subroutine (RenderPassType)
-void renderDebug()
+void render()
 {
 	TexCoord = VertexPosition.xy;
 	gl_Position = vec4(VertexPosition.xy * 2.0 - 1.0, 0.0, 1.0);

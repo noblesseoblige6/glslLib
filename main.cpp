@@ -32,7 +32,8 @@ void initProgram()
 	
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
-	model[0] = ModelHandle(MESH, "./Mesh/bs_ears.obj", true);
+	//model[0] = ModelHandle(MESH, "./Mesh/bs_ears.obj", true);
+	model[0] = ModelHandle(MESH, "./Mesh/bunny.obj", true);
 	//model[0] = ModelHandle(TEAPOT, 10, glm::mat4(1.0));
 	//model[1] = ModelHandle(PLANE);
 
@@ -45,18 +46,18 @@ void setMatrices(int idx)
 	Model = glm::mat4(1.0f);
 	if (idx == 0) {
 		float theta = -(float)PI * 1.0f;
-		//Model *= glm::scale(vec3(0.1f, 0.1f, 0.1f));
+		Model *= glm::scale(vec3(8.0f, 8.0f, 8.0f));
 		//Model *= glm::rotate(theta, glm::vec3(0.0f, 1.0f, 0.0f));
 		Model *= glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
 	}
 	glm::mat4 view = View * Quat.GetRotation();
 	glm::mat4 modelView = view * Model;
-	Phandle.setParameter("Material.Ka", glm::vec3(0.2f, 0.2f, 0.2f));
+	Phandle.setParameter("Material.Ka", glm::vec3(0.5f, 0.5f, 0.5f));
 	Phandle.setParameter("Material.Kd", glm::vec3(0.6f, 0.9f, 0.8f));
 	Phandle.setParameter("Material.Ks", glm::vec3(0.0f, 0.0f, 0.0f));
 	Phandle.setParameter("Material.Shineness", 100.0f);
 
-	Phandle.setParameter("Light.Intensity", glm::vec3(0.9f, 0.9f, 0.9f));
+	Phandle.setParameter("Light.Intensity", glm::vec3(1.3f));
 	Phandle.setParameter("Light.Position", view*LightPos);
 
 	Phandle.setParameter("MVP", Projection*modelView);
@@ -75,27 +76,16 @@ void display()
 	pRenderTech->useShader();
 
 	
-	pRenderTech->BeginRenderDepth();
+	pRenderTech->BeginRenderGBuffer();
 	{
 		for (int i = 0; i < 1; ++i) {
 			setMatrices(i);
 			model[i].render();
 		}
 	}
-	pRenderTech->EndRenderDepth();
+	pRenderTech->EndRenderGBuffer();
 	
-#if 1
-	pRenderTech->DebugRender();
-#else
-	pRenderTech->BeginRender();
-	{
-		for (int i = 0; i < 2; ++i) {
-			setMatrices(i);
-			model[i].render();
-		}
-	}
-	pRenderTech->EndRender();
-#endif
+	pRenderTech->Render();
 	
 	glutSwapBuffers();
 }

@@ -14,13 +14,12 @@ private:
 
 	glm::vec4 samplingPoints[256];
 
-	GLuint renderPassIndex1_vs;
-	GLuint renderPassIndexDebug_vs;
+	GLuint renderPass_GBuufer_vs;
+	GLuint renderPass_Render_vs;
 
-	GLuint renderPassIndex1_fs;
-	GLuint renderPassIndex2_fs;
-	GLuint renderPassIndexDebug_fs;
-	
+	GLuint renderPass_GBuufer_fs;
+	GLuint renderPass_Render_fs;
+
 	int depthWidth;
 	int depthHeight;
 
@@ -32,12 +31,9 @@ public:
 
 	void Resize(const int& w, const int& h);
 
-	void BeginRenderDepth();
-	void EndRenderDepth();
+	void BeginRenderGBuffer();
+	void EndRenderGBuffer();
 
-	void BeginRender();
-	void EndRender();
-
-	void DebugRender();
+	void Render();
 };
 
