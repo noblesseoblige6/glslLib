@@ -49,7 +49,7 @@ vec3 phongModel(vec3 pos, vec3 norm, vec3 albedo)
   vec3 spec = Light.Intensity * Material.Ks *
     pow( max( dot(r, v), 0.0 ), Material.Shininess );
 
-  return diffuse + spec;
+  return diffuse;// + spec;
 }
 
 subroutine void RenderPassType();
@@ -57,7 +57,6 @@ subroutine uniform RenderPassType RenderPass;
 subroutine (RenderPassType)
 void renderGBuffer()
 {
-  // Do nothing, depth will be written automatically
   PositionData = Position;
   NormalData = Normal;
   ColorData = Material.Kd;
@@ -71,9 +70,9 @@ void render()
   vec3 albedo = vec3(texture(AlbedoMap, TexCoord));
 
   vec3 ambient = Light.Intensity * Material.Ka;
-  vec3 diffAndSpec = phongModel(pos, normal, albedo);
+  vec3 diffuse = phongModel(pos, normal, albedo);
 
-  vec4 p = texture(DepthMap, TexCoord);
+  vec4 p = vec4(vec3(pos), 0.0);
 
   int count = 0;
   for(int i = 0; i < NumSamples; ++i)
@@ -88,14 +87,14 @@ void render()
       ++count;
   }
 
-  float a = clamp(float(count) * 2.0 / float(NumSamples), 0.0, 1.0);
+  float a = clamp(2.0 * float(count) / float(NumSamples), 0.0, 1.0);
 
-  // FragColor= vec4(diffAndSpec + ambient * a, 1.0);
-  FragColor= vec4(ambient * a, 1.0);
+  // FragColor= vec4(diffuse * a, 1.0);
+  // FragColor= vec4(diffuse, 1.0);
+  FragColor= vec4(vec3(a), 1.0);
 }
 
 void main()
 {
-  // This will call either shadeWithShadow or recordDepth
   RenderPass();
 }

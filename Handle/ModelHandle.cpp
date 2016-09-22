@@ -144,6 +144,7 @@ ModelHandle& ModelHandle::operator=(const ModelHandle& org)
 			model = new VBOPlane(xsize, zsize, xdivs, zdivs);
 		}
 		else {
+			//model = new VBOMesh("./mesh/bs_ears.obj", true);
 			model = new VBOMesh("./mesh/bunny.obj", true);
 			//model = org.model;
 		}

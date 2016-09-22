@@ -24,7 +24,7 @@ glm::mat4 Projection;
 glm::mat4 View;
 glm::mat4 Model;
 
-glm::vec4 LightPos = glm::vec4(2.0f, 2.0f, -2.0f, 1.0f);
+glm::vec4 LightPos = glm::vec4(0.0f, 2.0f, 2.0f, 1.0f);
 
 void initProgram()
 {
@@ -35,9 +35,9 @@ void initProgram()
 	//model[0] = ModelHandle(MESH, "./Mesh/bs_ears.obj", true);
 	model[0] = ModelHandle(MESH, "./Mesh/bunny.obj", true);
 	//model[0] = ModelHandle(TEAPOT, 10, glm::mat4(1.0));
-	//model[1] = ModelHandle(PLANE);
+	model[1] = ModelHandle(PLANE);
 
-	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	Quat.Init();
 }
 
@@ -48,8 +48,12 @@ void setMatrices(int idx)
 		float theta = -(float)PI * 1.0f;
 		Model *= glm::scale(vec3(8.0f, 8.0f, 8.0f));
 		//Model *= glm::rotate(theta, glm::vec3(0.0f, 1.0f, 0.0f));
-		Model *= glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
+		Model *= glm::translate(glm::vec3(0.0f, 0.1f, 0.0f));
 	}
+	else if (idx == 1) {
+		Model *= glm::scale(vec3(8.0f, 8.0f, 8.0f));
+	}
+
 	glm::mat4 view = View * Quat.GetRotation();
 	glm::mat4 modelView = view * Model;
 	Phandle.setParameter("Material.Ka", glm::vec3(0.5f, 0.5f, 0.5f));
@@ -57,7 +61,7 @@ void setMatrices(int idx)
 	Phandle.setParameter("Material.Ks", glm::vec3(0.0f, 0.0f, 0.0f));
 	Phandle.setParameter("Material.Shineness", 100.0f);
 
-	Phandle.setParameter("Light.Intensity", glm::vec3(1.3f));
+	Phandle.setParameter("Light.Intensity", glm::vec3(0.9f));
 	Phandle.setParameter("Light.Position", view*LightPos);
 
 	Phandle.setParameter("MVP", Projection*modelView);
@@ -78,7 +82,7 @@ void display()
 	
 	pRenderTech->BeginRenderGBuffer();
 	{
-		for (int i = 0; i < 1; ++i) {
+		for (int i = 0; i < 2; ++i) {
 			setMatrices(i);
 			model[i].render();
 		}
@@ -94,8 +98,8 @@ void resize(int w, int h)
 {
 	Width = w;
 	Height = h;
-	Near = 1.0f;
-	Far = 10.0f;
+	Near = 0.5f;
+	Far = 100.0f;
 
 	glViewport(0, 0, w, h);
 	Projection = glm::perspective(45.0f, (float)Width / (float)Height, Near, Far);

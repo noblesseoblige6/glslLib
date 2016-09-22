@@ -122,7 +122,7 @@ bool SSAO::InitFBO()
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normalTex, 0);
 
-		// Create position texture
+		// Create albedo color texture
 		glActiveTexture(GL_TEXTURE3);
 		glGenTextures(1, &albedoTex);
 		glBindTexture(GL_TEXTURE_2D, albedoTex);
