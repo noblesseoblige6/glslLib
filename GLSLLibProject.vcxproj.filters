@@ -28,9 +28,6 @@
     <Filter Include="Source Files\Technique\Phong">
       <UniqueIdentifier>{b22151ca-89f9-4259-95ab-8b0ca2a7c246}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Handle">
-      <UniqueIdentifier>{593eae06-aca6-41c3-ad25-57b734259d46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Handle">
       <UniqueIdentifier>{890403d9-b7d4-4b9a-8d06-9b8b08cac572}</UniqueIdentifier>
     </Filter>
@@ -40,8 +37,8 @@
     <Filter Include="Source Files\Technique\DepthShadow">
       <UniqueIdentifier>{ad8411cc-006c-444a-ac67-aab9fdfe4b8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Mouse">
-      <UniqueIdentifier>{e73fc6f2-83d8-4f2f-b3fd-c9b67fe05149}</UniqueIdentifier>
+    <Filter Include="Source Files\Handle">
+      <UniqueIdentifier>{46dd42b7-e3b9-442f-b248-0dca374c465a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -59,18 +56,6 @@
     </ClCompile>
     <ClCompile Include="frustum.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Handle\glHandle.cpp">
-      <Filter>Source Files\Handle</Filter>
-    </ClCompile>
-    <ClCompile Include="Handle\ModelHandle.cpp">
-      <Filter>Source Files\Handle</Filter>
-    </ClCompile>
-    <ClCompile Include="Handle\programHandle.cpp">
-      <Filter>Source Files\Handle</Filter>
-    </ClCompile>
-    <ClCompile Include="Handle\shaderHandle.cpp">
-      <Filter>Source Files\Handle</Filter>
     </ClCompile>
     <ClCompile Include="VBO\VBOCube.cpp">
       <Filter>Source Files\VBO</Filter>
@@ -97,7 +82,19 @@
       <Filter>Source Files\Technique\Toon</Filter>
     </ClCompile>
     <ClCompile Include="Quaternion.cpp">
-      <Filter>Source Files\Mouse</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle\glHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle\ModelHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle\programHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="Handle\shaderHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +153,7 @@
       <Filter>Source Files\Technique\Toon</Filter>
     </ClInclude>
     <ClInclude Include="Quaternion.h">
-      <Filter>Source Files\Mouse</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
