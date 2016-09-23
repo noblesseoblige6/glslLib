@@ -13,7 +13,7 @@
 glHandle Ghandle;
 shaderHandle Phandle;
 shaderHandle PhandleTest;
-ModelHandle model[2];
+ModelHandle* model[2];
 
 Quaternion Quat;
 
@@ -21,6 +21,10 @@ int Height, Width;
 float Near, Far;
 
 glm::mat4 Projection;
+glm::vec3 CamDir;
+glm::vec3 CamPos;
+glm::vec3 CamUp;
+bool IsLeftClicked = false;
 glm::mat4 View;
 glm::mat4 Model;
 
@@ -33,11 +37,13 @@ void initProgram()
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
 	//model[0] = ModelHandle(MESH, "./Mesh/bs_ears.obj", true);
-	model[0] = ModelHandle(MESH, "./Mesh/bunny.obj", true);
+	model[0] = new ModelHandle(MESH, "./Mesh/bunny.obj", true);
 	//model[0] = ModelHandle(TEAPOT, 10, glm::mat4(1.0));
-	model[1] = ModelHandle(PLANE);
-
-	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model[1] = new ModelHandle(PLANE);
+	CamPos = glm::vec3(0.0f, 0.0f, 2.5f);
+	CamDir = glm::vec3(0.0f, 0.0f, 0.0f);
+	CamUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	View = glm::lookAt(CamPos, CamDir, CamUp);
 	Quat.Init();
 }
 
@@ -84,7 +90,7 @@ void display()
 	{
 		for (int i = 0; i < 2; ++i) {
 			setMatrices(i);
-			model[i].render();
+			model[i]->render();
 		}
 	}
 	pRenderTech->EndRenderGBuffer();
@@ -124,14 +130,20 @@ void idle(void)
 
 void mouse(int button, int state, int x, int y)
 {
-	switch (button) {
+	switch (button)
+	{
+
 	case GLUT_LEFT_BUTTON:
+
 		switch (state) {
 		case GLUT_DOWN:
+			IsLeftClicked = true;
 			Quat.StartRotation(x, y);
 			glutIdleFunc(idle);
 			break;
 		case GLUT_UP:
+			IsLeftClicked = false;
+
 			glutIdleFunc(NULL);
 			Quat.EndRotation();
 			break;
@@ -139,19 +151,52 @@ void mouse(int button, int state, int x, int y)
 			break;
 		}
 		break;
+	case GLUT_RIGHT_BUTTON:
+
+		break;
 	default:
 		break;
 	}
+	
+	//glutPostRedisplay();
 }
-
 void motion(int x, int y) 
 {
-	Quat.Rotation(x, y, Width, Height);
+	static int prev_x = x;
+	static int prev_y = y;
+
+	if (IsLeftClicked)
+	{
+		Quat.Rotation(x, y, Width, Height);
+	}
+	else
+	{
+		float dx = (x - prev_x) / (float)Width;
+		float dy = (y - prev_y) / (float)Height;
+
+		CamPos += glm::vec3(dx)*glm::cross(CamDir-CamPos, CamUp) + glm::vec3(dy)*CamUp;
+		CamDir += glm::vec3(dx)*glm::cross(CamDir-CamPos, CamUp) + glm::vec3(dy)*CamUp;
+		View = glm::lookAt(CamPos, CamDir, CamUp);
+	}
+	prev_x = x;
+	prev_y = y;
+	glutPostRedisplay();
+
 }
 
 void mouseWheel(int wheel_number, int direction, int x, int y)
 {
-	//TODO
+	if (direction == 1)
+	{
+		CamPos += glm::vec3(0.2f) * (CamDir - CamPos);
+	}
+	else 
+	{
+		CamPos += glm::vec3(0.2f) * (CamPos - CamDir);
+	}
+
+	View = glm::lookAt(CamPos, CamDir, glm::vec3(0.0, 1.0, 0.0));
+	glutPostRedisplay();
 }
 
 int main(int argc, char* argv[])
@@ -160,7 +205,7 @@ int main(int argc, char* argv[])
 	glutInit(&argc, argv);
 	glutInitWindowPosition(100, 100);
 
-	glutInitWindowSize(512, 512);
+	glutInitWindowSize(960, 540);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("GLEW");
 	glutDisplayFunc(display);
