@@ -99,8 +99,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CameraHandle.cpp" />
     <ClCompile Include="frustum.cpp" />
+    <ClCompile Include="Handle\CameraHandle.cpp" />
     <ClCompile Include="Handle\glHandle.cpp" />
     <ClCompile Include="Handle\ModelHandle.cpp" />
     <ClCompile Include="Handle\programHandle.cpp" />
@@ -120,9 +120,9 @@
     <ClCompile Include="VBO\vbotorus.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraHandle.h" />
     <ClInclude Include="defines.h" />
     <ClInclude Include="frustum.h" />
+    <ClInclude Include="Handle\CameraHandle.h" />
     <ClInclude Include="Handle\glHandle.h" />
     <ClInclude Include="Handle\ModelHandle.h" />
     <ClInclude Include="Handle\programHandle.h" />

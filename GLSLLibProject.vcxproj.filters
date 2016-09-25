@@ -96,8 +96,8 @@
     <ClCompile Include="Handle\shaderHandle.cpp">
       <Filter>Source Files\Handle</Filter>
     </ClCompile>
-    <ClCompile Include="CameraHandle.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Handle\CameraHandle.cpp">
+      <Filter>Source Files\Handle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,8 +158,8 @@
     <ClInclude Include="Quaternion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CameraHandle.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Handle\CameraHandle.h">
+      <Filter>Header Files\Handle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

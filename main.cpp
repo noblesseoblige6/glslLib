@@ -7,7 +7,7 @@
 #include "Handle/shaderHandle.h"
 #include "Handle/glHandle.h"
 #include "Handle/modelHandle.h"
-#include "CameraHandle.h"
+#include "Handle/CameraHandle.h"
 
 #include "Quaternion.h"
 
