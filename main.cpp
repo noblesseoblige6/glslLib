@@ -59,12 +59,12 @@ void setMatrices(int idx)
 	View = CamHandle.GetViewMatrix();
 	glm::mat4 view = View * CamHandle.GetRotation();
 	glm::mat4 modelView = view * Model;
-	Phandle.setParameter("Material.Ka", glm::vec3(0.5f, 0.5f, 0.5f));
+	Phandle.setParameter("Material.Ka", glm::vec3(0.2f, 0.2f, 0.2f));
 	Phandle.setParameter("Material.Kd", glm::vec3(0.6f, 0.9f, 0.8f));
 	Phandle.setParameter("Material.Ks", glm::vec3(0.0f, 0.0f, 0.0f));
 	Phandle.setParameter("Material.Shineness", 100.0f);
 
-	Phandle.setParameter("Light.Intensity", glm::vec3(0.9f));
+	Phandle.setParameter("Light.Intensity", glm::vec3(0.5f));
 	Phandle.setParameter("Light.Position", view*LightPos);
 
 	Phandle.setParameter("MVP", Projection*modelView);

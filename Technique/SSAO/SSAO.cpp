@@ -45,7 +45,7 @@ SSAO::SSAO(const int& w, const int& h)
 	for (int i = 0; i < numSamples; ++i)
 	{
 		float u = wgt(mt);
-		float r = 2.0f * u;
+		float r = 0.1f * u;
 		float v = rnd(mt); //-1.0~1.0
 		float sq = sqrtf(1.0f - v * v);
 		float theta = ang(mt);

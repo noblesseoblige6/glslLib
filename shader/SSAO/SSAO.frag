@@ -89,9 +89,9 @@ void render()
 
   float a = clamp(2.0 * float(count) / float(NumSamples), 0.0, 1.0);
 
-  // FragColor= vec4(diffuse * a, 1.0);
-  // FragColor= vec4(diffuse, 1.0);
-  FragColor= vec4(vec3(a), 1.0);
+   FragColor= vec4(diffuse + ambient * a, 1.0);
+  //@comment only AO
+  //FragColor= vec4(vec3(a), 1.0);
 }
 
 void main()
