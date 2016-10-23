@@ -10,7 +10,8 @@ SSAO::SSAO(const int& w, const int& h)
 {
 
 	loadShader("./shader/SSAO/SSAO.vert", GLSL_SHADER::VERTEX);
-	loadShader("./shader/SSAO/SSAO.frag", GLSL_SHADER::FRAGMENT);
+	//loadShader("./shader/SSAO/SSAO.frag", GLSL_SHADER::FRAGMENT);
+	loadShader("./shader/SSAO/SSAOBasedNormal.frag", GLSL_SHADER::FRAGMENT);
 	linkProgram();
 	useProgram();
 
@@ -36,7 +37,8 @@ SSAO::SSAO(const int& w, const int& h)
 	std::mt19937 mt(rd());
 
 	std::uniform_real_distribution<double> wgt(0.0, 1.0);
-	std::uniform_real_distribution<double> rnd(-1.0, 1.0);
+	//std::uniform_real_distribution<double> rnd(-1.0, 1.0);
+	std::uniform_real_distribution<double> rnd(0.0, 1.0);
 	std::uniform_real_distribution<double> ang(0.0, 2.0*M_PI);
 
 	int numSamples = 256;
@@ -46,16 +48,16 @@ SSAO::SSAO(const int& w, const int& h)
 	{
 		float u = wgt(mt);
 		float r = 0.1f * u;
-		float v = rnd(mt); //-1.0~1.0
-		float sq = sqrtf(1.0f - v * v);
+		float cosp = rnd(mt); //-1.0~1.0
+		float sinp = sqrtf(1.0f - cosp * cosp);
 		float theta = ang(mt);
 		float cost = cos(theta);
 		float sint = sin(theta);
 
-		samplingPoints[i].x = r * cost;
-		samplingPoints[i].y = r * sint;
-		samplingPoints[i].z = r * v;
-		samplingPoints[i].w = 1.0f;
+		samplingPoints[i].x = r * sinp * cost;
+		samplingPoints[i].y = r * sinp * sint;
+		samplingPoints[i].z = r * cosp;
+		samplingPoints[i].w = 0.0f;
 
 		char str[128];
 		sprintf(str, "SamplePoints[%d]", i);
