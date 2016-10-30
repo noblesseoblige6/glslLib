@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include <glm/glm.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -74,7 +75,7 @@ void setMatrices(int idx)
 	Phandle.setParameter("NormalMatrix", glm::mat3(glm::vec3(modelView[0]), glm::vec3(modelView[1]), glm::vec3(modelView[2])));
 
 	Phandle.setParameter("Viewport", glm::vec2(Width, Height));
-
+	Phandle.setParameter("Time", (float)clock());
 }
 
 void display()
@@ -82,7 +83,6 @@ void display()
 	SSAO* pRenderTech = (SSAO*)Phandle.getShader();	
 	pRenderTech->useShader();
 
-	
 	pRenderTech->BeginRenderGBuffer();
 	{
 		for (int i = 0; i < 2; ++i) {
@@ -93,7 +93,7 @@ void display()
 	pRenderTech->EndRenderGBuffer();
 	
 	pRenderTech->Render();
-	
+
 	glutSwapBuffers();
 }
 
@@ -198,9 +198,9 @@ int main(int argc, char* argv[])
 {
 	// NOTE:Should create window before glewInit
 	glutInit(&argc, argv);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(0, 0);
 
-	glutInitWindowSize(960*1.5, 540*1.5);
+	glutInitWindowSize(960, 540);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutCreateWindow("GLEW");
 	glutDisplayFunc(display);

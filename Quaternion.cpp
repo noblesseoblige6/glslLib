@@ -25,20 +25,20 @@ void Quaternion::QuatMul(const glm::vec4& dQuat)
 
 void Quaternion::QuatRot()
 {
-	double x2 = curQuat[1] * curQuat[1] * 2.0;
-	double y2 = curQuat[2] * curQuat[2] * 2.0;
-	double z2 = curQuat[3] * curQuat[3] * 2.0;
-	double xy = curQuat[1] * curQuat[2] * 2.0;
-	double yz = curQuat[2] * curQuat[3] * 2.0;
-	double zx = curQuat[3] * curQuat[1] * 2.0;
-	double xw = curQuat[1] * curQuat[0] * 2.0;
-	double yw = curQuat[2] * curQuat[0] * 2.0;
-	double zw = curQuat[3] * curQuat[0] * 2.0;
+	float x2 = curQuat[1] * curQuat[1] * 2.0f;
+	float y2 = curQuat[2] * curQuat[2] * 2.0f;
+	float z2 = curQuat[3] * curQuat[3] * 2.0f;
+	float xy = curQuat[1] * curQuat[2] * 2.0f;
+	float yz = curQuat[2] * curQuat[3] * 2.0f;
+	float zx = curQuat[3] * curQuat[1] * 2.0f;
+	float xw = curQuat[1] * curQuat[0] * 2.0f;
+	float yw = curQuat[2] * curQuat[0] * 2.0f;
+	float zw = curQuat[3] * curQuat[0] * 2.0f;
 
-	rotation[0][0] = 1.0 - y2 - z2; rotation[0][1] = xy + zw;       rotation[0][2] = zx - yw;       rotation[0][3] = 0.0;
-	rotation[1][0] = xy - zw;       rotation[1][1] = 1.0 - z2 - x2; rotation[1][2] = yz + xw;       rotation[1][3] = 0.0;
-	rotation[2][0] = zx + yw;       rotation[2][1] = yz - xw;       rotation[2][2] = 1.0 - x2 - y2; rotation[2][3] = 0.0;
-	rotation[3][0] = 0.0;           rotation[3][1] = 0.0;           rotation[3][2] = 0.0;           rotation[3][3] = 1.0;
+	rotation[0][0] = 1.0f - y2 - z2; rotation[0][1] = xy + zw;       rotation[0][2] = zx - yw;      rotation[0][3] = 0.0f;
+	rotation[1][0] = xy - zw;       rotation[1][1] = 1.0f - z2 - x2; rotation[1][2] = yz + xw;       rotation[1][3] = 0.0f;
+	rotation[2][0] = zx + yw;       rotation[2][1] = yz - xw;       rotation[2][2] = 1.0f - x2 - y2; rotation[2][3] = 0.0f;
+	rotation[3][0] = 0.0f;           rotation[3][1] = 0.0f;           rotation[3][2] = 0.0f;           rotation[3][3] = 1.0f;
 }
 
 void Quaternion::StartRotation(int x, int y)

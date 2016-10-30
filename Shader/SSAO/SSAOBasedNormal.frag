@@ -19,11 +19,12 @@ uniform mat4 ProjectionMatrix;
 
 
 uniform sampler2D PositionMap, NormalMap, AlbedoMap, DepthMap;
-uniform vec4 SamplePoints[256];
+uniform sampler2D SampleMap;
 uniform vec2 Viewport;
 
 uniform int NumSamples;
-uniform float kPI;
+uniform float SampleRadius;
+uniform float Time;
 
 in vec3 Position;
 in vec3 Normal;
@@ -53,6 +54,10 @@ vec3 phongModel(vec3 pos, vec3 norm, vec3 albedo)
   return diffuse;// + spec;
 }
 
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
 subroutine void RenderPassType();
 subroutine uniform RenderPassType RenderPass;
 subroutine (RenderPassType)
@@ -74,34 +79,21 @@ void render()
   vec3 diffuse = phongModel(pos, normal, albedo);
 
   vec4 p = vec4(vec3(pos), 0.0);
-vec3 ny = vec3(0, 1, 0);
-vec3 nz = vec3(0, 0, 1);
-
-  float theta = -atan(length(cross(normal, ny)), dot(normal, ny)); 
-  float phi   = -atan(length(cross(normal, nz)), dot(normal, nz));
-
-float cost = cos(theta);
-float sint = sin(theta);
-float cosp = cos(phi);
-float sinp = sin(phi);
-
 
   int count = 0;
   for(int i = 0; i < NumSamples; ++i)
   {
-    // Rotation along theta
-    vec4 samplePoint = vec4(cost*SamplePoints[i].x + -sint*SamplePoints[i].y,
-                        sint*SamplePoints[i].x + cost*SamplePoints[i].y,
-                        SamplePoints[i].z,
-                        1.0);
-    // Rotation along phi
-    vec4 samplePoint2 = vec4(cosp*samplePoint.x + sinp*samplePoint.z,
-                         samplePoint.y,
-                         -sinp*samplePoint.x + cosp*samplePoint.z,
-                         1.0);
+    vec2 coord = vec2(rand(gl_FragCoord.xy), rand(gl_FragCoord.yz));
+    vec3 sampleData = texture(SampleMap, coord).xyz * 2.0-1.0;
+    
+    // Detemine sampling radius
+    sampleData *= SampleRadius;
 
-
-    vec4 q = ProjectionMatrix * (p + samplePoint2);
+    // Based on normal, hemi-sphere sampling
+    if(dot(normalize(sampleData-p.xyz), normal) < 0.0)
+      sampleData *= -1.0;
+    
+    vec4 q = ProjectionMatrix * (p + vec4(vec3(sampleData), 1.0));
 
     // Convert to texture coord
     q = q * 0.5 / q.w + 0.5;
@@ -113,9 +105,12 @@ float sinp = sin(phi);
 
   float a = clamp(2.0 * float(count) / float(NumSamples), 0.0, 1.0);
 
-  FragColor= vec4(diffuse + ambient * a, 1.0);
+  //FragColor= vec4(diffuse + ambient * a, 1.0);
   //@comment only AO
   //FragColor= vec4(vec3(a), 1.0);
+  FragColor = texture(SampleMap, TexCoord);
+  //vec2 coord = vec2(rand(gl_FragCoord.xy), rand(gl_FragCoord.yz));
+  //FragColor = texture(SampleMap, TexCoord);
 }
 
 void main()

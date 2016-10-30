@@ -24,45 +24,60 @@ SSAO::SSAO(const int& w, const int& h)
 	depthWidth = w;
 	depthHeight = h;
 
+	glEnable(GL_TEXTURE_2D);
+
 	if (!InitFBO())
 		std::cerr << "Failed to init FBO" << std::endl;
-
-	setUniform("DepthMap", 0);
-	setUniform("PositionMap", 1);
-	setUniform("NormalMap", 2);
-	setUniform("AlbedoMap", 3);
 
 	// Create sample points
 	std::random_device rd;
 	std::mt19937 mt(rd());
 
 	std::uniform_real_distribution<double> wgt(0.0, 1.0);
-	//std::uniform_real_distribution<double> rnd(-1.0, 1.0);
-	std::uniform_real_distribution<double> rnd(0.0, 1.0);
+	std::uniform_real_distribution<double> rnd(-1.0, 1.0);
 	std::uniform_real_distribution<double> ang(0.0, 2.0*M_PI);
 
-	int numSamples = 256;
+	int numSamples = 16;
 	setUniform("NumSamples", numSamples);
+	setUniform("SampleRadius", 0.1f);
 
-	for (int i = 0; i < numSamples; ++i)
+	glActiveTexture(GL_TEXTURE4);
+	glGenTextures(1, &sampleTex);
+	glBindTexture(GL_TEXTURE_2D, sampleTex);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	const float R = 1.0f;
+	glm::vec4 samplingPoints[16][16];
+	for (int i = 0; i < 16; ++i)
 	{
-		float u = wgt(mt);
-		float r = 0.1f * u;
-		float cosp = rnd(mt); //-1.0~1.0
-		float sinp = sqrtf(1.0f - cosp * cosp);
-		float theta = ang(mt);
-		float cost = cos(theta);
-		float sint = sin(theta);
+		for (int j = 0; j < 16; ++j)
+		{
+			float u = (float)wgt(mt);
+			float r = R * u;
+			float cosp = (float)rnd(mt); //-1.0~1.0
+			float sinp = sqrtf(1.0f - cosp * cosp);
+			float theta = (float)ang(mt);
+			float cost = cos(theta);
+			float sint = sin(theta);
 
-		samplingPoints[i].x = r * sinp * cost;
-		samplingPoints[i].y = r * sinp * sint;
-		samplingPoints[i].z = r * cosp;
-		samplingPoints[i].w = 0.0f;
-
-		char str[128];
-		sprintf(str, "SamplePoints[%d]", i);
-		setUniform(str, samplingPoints[i]);
+			samplingPoints[i][j].x = 0.0f;//(r * sinp * cost + R)*0.5f;
+			samplingPoints[i][j].y = 1.0f;//(r * sinp * sint + R)*0.5f;
+			samplingPoints[i][j].z = 0.0f;//(r * cosp        + R)*0.5f;
+			samplingPoints[i][j].w = 1.0f;
+		}
 	}
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 16, 16, 0, GL_RGBA, GL_FLOAT, samplingPoints);
+	glBindTexture(GL_TEXTURE_2D, NULL);
+
+	setUniform("DepthMap", 0);
+	setUniform("PositionMap", 1);
+	setUniform("NormalMap", 2);
+	setUniform("AlbedoMap", 3);
+	setUniform("SampleMap", 4);
 }
 
 SSAO::~SSAO()
@@ -139,10 +154,10 @@ bool SSAO::InitFBO()
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, albedoTex, 0);
 
 
-		GLenum drawBuffers[] = { GL_NONE , 
-			                     GL_COLOR_ATTACHMENT0, 
-			                     GL_COLOR_ATTACHMENT1,  
-			                     GL_COLOR_ATTACHMENT2 };
+		GLenum drawBuffers[] = { GL_NONE ,
+								 GL_COLOR_ATTACHMENT0,
+								 GL_COLOR_ATTACHMENT1,
+								 GL_COLOR_ATTACHMENT2 };
 		glDrawBuffers(4, drawBuffers);
 
 
@@ -163,7 +178,7 @@ bool SSAO::InitFBO()
 }
 
 void SSAO::BeginRenderGBuffer()
-{	
+{
 	glBindFramebuffer(GL_FRAMEBUFFER, depthFBO);
 
 	glEnable(GL_DEPTH_TEST);
@@ -196,6 +211,7 @@ void SSAO::Render()
 	glBindTexture(GL_TEXTURE_2D, positionTex);
 	glBindTexture(GL_TEXTURE_2D, normalTex);
 	glBindTexture(GL_TEXTURE_2D, albedoTex);
+	glBindTexture(GL_TEXTURE_2D, sampleTex);
 	{
 		glBegin(GL_QUADS);
 		glVertex2d(0.0, 0.0);

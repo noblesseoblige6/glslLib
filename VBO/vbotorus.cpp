@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cmath>
 
-const float TWOPI = 6.28318530718;
+const float TWOPI = 6.28318530718f;
 
 VBOTorus::VBOTorus(float outerRadius, float innerRadius, int nsides, int nrings) :
 rings(nrings), sides(nsides)

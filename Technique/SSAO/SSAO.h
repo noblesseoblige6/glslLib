@@ -9,10 +9,9 @@ private:
 	GLuint normalTex;
 	GLuint albedoTex;
 	GLuint depthTex;
+	//GLuint sampleTex;
 
 	GLuint depthFBO;
-
-	glm::vec4 samplingPoints[256];
 
 	GLuint renderPass_GBuufer_vs;
 	GLuint renderPass_Render_vs;
@@ -28,6 +27,8 @@ private:
 public:
 	SSAO(const int& w, const int& h);
 	~SSAO();
+
+	GLuint sampleTex;
 
 	void Resize(const int& w, const int& h);
 
