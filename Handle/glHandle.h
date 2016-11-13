@@ -9,5 +9,11 @@ public:
 	glHandle(void);
 	~glHandle(void);
 	void init();
+	int GetNumOfTextureUnit();
+	int GetNumOfUniformInVert();
+	int GetNumOfUniformInFrag();
+	int GetNumOfAttribute();
+	int GetNumOfVarying();
+
 };
 

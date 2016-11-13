@@ -9,7 +9,7 @@ private:
 	GLuint normalTex;
 	GLuint albedoTex;
 	GLuint depthTex;
-	//GLuint sampleTex;
+	GLuint sampleTex;
 
 	GLuint depthFBO;
 
@@ -27,8 +27,6 @@ private:
 public:
 	SSAO(const int& w, const int& h);
 	~SSAO();
-
-	GLuint sampleTex;
 
 	void Resize(const int& w, const int& h);
 

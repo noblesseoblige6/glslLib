@@ -1,4 +1,4 @@
-#version 400
+#version 440
 
 struct LightInfo {
   vec4 Position;
@@ -17,14 +17,16 @@ uniform MaterialInfo Material;
 uniform mat4 MVP;
 uniform mat4 ProjectionMatrix;
 
+uniform sampler2D PositionMap;
+uniform sampler2D NormalMap;
+uniform sampler2D AlbedoMap;
+uniform sampler2D DepthMap;
 
-uniform sampler2D PositionMap, NormalMap, AlbedoMap, DepthMap;
-uniform sampler2D SampleMap;
 uniform vec2 Viewport;
 
+uniform sampler2D SampleMap;
 uniform int NumSamples;
 uniform float SampleRadius;
-uniform float Time;
 
 in vec3 Position;
 in vec3 Normal;
@@ -79,12 +81,14 @@ void render()
   vec3 diffuse = phongModel(pos, normal, albedo);
 
   vec4 p = vec4(vec3(pos), 0.0);
-
+  float offset = 1.0 / float(NumSamples);
   int count = 0;
   for(int i = 0; i < NumSamples; ++i)
   {
-    vec2 coord = vec2(rand(gl_FragCoord.xy), rand(gl_FragCoord.yz));
-    vec3 sampleData = texture(SampleMap, coord).xyz * 2.0-1.0;
+    for(int j = 0; j < NumSamples; ++j)
+    {
+    vec2 coord = vec2(i * offset, j * offset);
+    vec3 sampleData = texture(AlbedoMap, coord).xyz * 2.0-1.0;
     
     // Detemine sampling radius
     sampleData *= SampleRadius;
@@ -101,16 +105,15 @@ void render()
     // Compare the depth of textre and sample points
     if(q.z < texture(DepthMap, q.xy).z)
       ++count;
+    }
   }
 
   float a = clamp(2.0 * float(count) / float(NumSamples), 0.0, 1.0);
 
-  //FragColor= vec4(diffuse + ambient * a, 1.0);
-  //@comment only AO
-  //FragColor= vec4(vec3(a), 1.0);
-  FragColor = texture(SampleMap, TexCoord);
-  //vec2 coord = vec2(rand(gl_FragCoord.xy), rand(gl_FragCoord.yz));
-  //FragColor = texture(SampleMap, TexCoord);
+   FragColor= vec4(diffuse + ambient * a, 1.0);
+   // FragColor= texture(SampleMap, TexCoord);
+   // FragColor= vec4(vec3(a), 1.0);
+
 }
 
 void main()

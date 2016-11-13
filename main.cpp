@@ -32,14 +32,14 @@ glm::vec4 LightPos = glm::vec4(0.0f, 2.0f, 2.0f, 1.0f);
 void initProgram()
 {
 	Phandle.init(AO);
-	
+
 	Phandle.printVariables(ATTRIBUTE);
 	Phandle.printVariables(UNIFORM);
 	//model[0] = ModelHandle(MESH, "./Mesh/bs_ears.obj", true);
 	model[0] = new ModelHandle(MESH, "./Mesh/bunny.obj", true);
 	//model[0] = ModelHandle(TEAPOT, 10, glm::mat4(1.0));
 	model[1] = new ModelHandle(PLANE);
-	
+
 	CamHandle.Init(glm::vec3(0.0f, 0.0f, 2.5f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	View = CamHandle.GetViewMatrix();
 }
@@ -61,7 +61,7 @@ void setMatrices(int idx)
 	glm::mat4 view = View * CamHandle.GetRotation();
 	glm::mat4 modelView = view * Model;
 	Phandle.setParameter("Material.Ka", glm::vec3(0.2f, 0.2f, 0.2f));
-	Phandle.setParameter("Material.Kd", glm::vec3(0.6f, 0.9f, 0.8f));
+	Phandle.setParameter("Material.Kd", glm::vec3(0.3f, 0.9f, 0.3f));
 	Phandle.setParameter("Material.Ks", glm::vec3(0.0f, 0.0f, 0.0f));
 	Phandle.setParameter("Material.Shineness", 100.0f);
 
@@ -75,12 +75,11 @@ void setMatrices(int idx)
 	Phandle.setParameter("NormalMatrix", glm::mat3(glm::vec3(modelView[0]), glm::vec3(modelView[1]), glm::vec3(modelView[2])));
 
 	Phandle.setParameter("Viewport", glm::vec2(Width, Height));
-	Phandle.setParameter("Time", (float)clock());
 }
 
 void display()
 {
-	SSAO* pRenderTech = (SSAO*)Phandle.getShader();	
+	SSAO* pRenderTech = (SSAO*)Phandle.getShader();
 	pRenderTech->useShader();
 
 	pRenderTech->BeginRenderGBuffer();
@@ -91,7 +90,7 @@ void display()
 		}
 	}
 	pRenderTech->EndRenderGBuffer();
-	
+
 	pRenderTech->Render();
 
 	glutSwapBuffers();
@@ -101,12 +100,12 @@ void resize(int w, int h)
 {
 	Width = w;
 	Height = h;
-	Near = 0.5f;
-	Far = 100.0f;
+	Near = 1.0f;
+	Far = 1000.0f;
 
 	glViewport(0, 0, w, h);
 	Projection = glm::perspective(45.0f, (float)Width / (float)Height, Near, Far);
-	
+
 	SSAO* pRenderTech = (SSAO*)Phandle.getShader();
 	pRenderTech->Resize(Width, Height);
 }
@@ -164,10 +163,8 @@ void mouse(int button, int state, int x, int y)
 	default:
 		break;
 	}
-	
-	//glutPostRedisplay();
 }
-void motion(int x, int y) 
+void motion(int x, int y)
 {
 	if (IsLeftClicked)
 	{
@@ -185,7 +182,7 @@ void mouseWheel(int wheel_number, int direction, int x, int y)
 	{
 		CamHandle.ZoomIn();
 	}
-	else 
+	else
 	{
 		CamHandle.ZoomOut();
 	}

@@ -26,3 +26,39 @@ void glHandle::init()
 		exit(EXIT_FAILURE);
 	}
 }
+
+int glHandle::GetNumOfTextureUnit()
+{
+	// テクスチャ最大数
+	GLint num_tex_units;
+	glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &num_tex_units);
+	return num_tex_units;
+}
+
+int glHandle::GetNumOfUniformInVert()
+{
+	GLint num;
+	glGetIntegerv(GL_MAX_VERTEX_UNIFORM_VECTORS, &num);
+	return num;
+}
+
+int glHandle::GetNumOfUniformInFrag()
+{
+	GLint num;
+	glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_VECTORS, &num);
+	return num;
+}
+
+int glHandle::GetNumOfAttribute()
+{
+	GLint num;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &num);
+	return num;
+}
+
+int glHandle::GetNumOfVarying()
+{
+	GLint num;
+	glGetIntegerv(GL_MAX_VARYING_VECTORS, &num);
+	return num;
+}

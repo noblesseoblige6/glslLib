@@ -38,23 +38,12 @@ SSAO::SSAO(const int& w, const int& h)
 	std::uniform_real_distribution<double> ang(0.0, 2.0*M_PI);
 
 	int numSamples = 16;
-	setUniform("NumSamples", numSamples);
-	setUniform("SampleRadius", 0.1f);
-
-	glActiveTexture(GL_TEXTURE4);
-	glGenTextures(1, &sampleTex);
-	glBindTexture(GL_TEXTURE_2D, sampleTex);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+	
 	const float R = 1.0f;
-	glm::vec4 samplingPoints[16][16];
-	for (int i = 0; i < 16; ++i)
+	glm::vec3 samplingPoints[16][16];
+	for (int i = 0; i < numSamples; ++i)
 	{
-		for (int j = 0; j < 16; ++j)
+		for (int j = 0; j < numSamples; ++j)
 		{
 			float u = (float)wgt(mt);
 			float r = R * u;
@@ -63,14 +52,24 @@ SSAO::SSAO(const int& w, const int& h)
 			float theta = (float)ang(mt);
 			float cost = cos(theta);
 			float sint = sin(theta);
-
-			samplingPoints[i][j].x = 0.0f;//(r * sinp * cost + R)*0.5f;
-			samplingPoints[i][j].y = 1.0f;//(r * sinp * sint + R)*0.5f;
-			samplingPoints[i][j].z = 0.0f;//(r * cosp        + R)*0.5f;
-			samplingPoints[i][j].w = 1.0f;
+			
+			// Clamp -1~1 to 0~1
+			samplingPoints[i][j].x = (r * sinp * cost + R)*0.5f;
+			samplingPoints[i][j].y = (r * sinp * sint + R)*0.5f;
+			samplingPoints[i][j].z = (r * cosp + R)*0.5f;
 		}
 	}
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 16, 16, 0, GL_RGBA, GL_FLOAT, samplingPoints);
+
+	glActiveTexture(GL_TEXTURE4);
+	glGenTextures(1, &sampleTex);
+	glBindTexture(GL_TEXTURE_2D, sampleTex);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, numSamples, numSamples, 0, GL_RGB, GL_FLOAT, samplingPoints);
 	glBindTexture(GL_TEXTURE_2D, NULL);
 
 	setUniform("DepthMap", 0);
@@ -78,6 +77,9 @@ SSAO::SSAO(const int& w, const int& h)
 	setUniform("NormalMap", 2);
 	setUniform("AlbedoMap", 3);
 	setUniform("SampleMap", 4);
+
+	setUniform("NumSamples", numSamples);
+	setUniform("SampleRadius", 0.1f);
 }
 
 SSAO::~SSAO()
@@ -98,6 +100,7 @@ bool SSAO::InitFBO()
 	glBindFramebuffer(GL_FRAMEBUFFER, depthFBO);
 	{
 		// Create texture to attach frame buffer
+		{
 		glActiveTexture(GL_TEXTURE0);
 		glGenTextures(1, &depthTex);
 		glBindTexture(GL_TEXTURE_2D, depthTex);
@@ -110,54 +113,64 @@ bool SSAO::InitFBO()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTex, 0);
+		}
 
 		// Create position texture
-		glActiveTexture(GL_TEXTURE1);
-		glGenTextures(1, &positionTex);
-		glBindTexture(GL_TEXTURE_2D, positionTex);
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glGenTextures(1, &positionTex);
+			glBindTexture(GL_TEXTURE_2D, positionTex);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, depthWidth, depthHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, depthWidth, depthHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, positionTex, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, positionTex, 0);
+			glBindTexture(GL_TEXTURE_2D, NULL);
+		}
 
 		// Create normal texture
-		glActiveTexture(GL_TEXTURE2);
-		glGenTextures(1, &normalTex);
-		glBindTexture(GL_TEXTURE_2D, normalTex);
+		{
+			glActiveTexture(GL_TEXTURE2);
+			glGenTextures(1, &normalTex);
+			glBindTexture(GL_TEXTURE_2D, normalTex);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, depthWidth, depthHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, depthWidth, depthHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normalTex, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normalTex, 0);
+			glBindTexture(GL_TEXTURE_2D, NULL);
+		}
 
 		// Create albedo color texture
-		glActiveTexture(GL_TEXTURE3);
-		glGenTextures(1, &albedoTex);
-		glBindTexture(GL_TEXTURE_2D, albedoTex);
+		{
+			glActiveTexture(GL_TEXTURE3);
+			glGenTextures(1, &albedoTex);
+			glBindTexture(GL_TEXTURE_2D, albedoTex);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, depthWidth, depthHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, depthWidth, depthHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, albedoTex, 0);
-
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, albedoTex, 0);
+			glBindTexture(GL_TEXTURE_2D, NULL);
+		}
 
 		GLenum drawBuffers[] = { GL_NONE ,
 								 GL_COLOR_ATTACHMENT0,
 								 GL_COLOR_ATTACHMENT1,
-								 GL_COLOR_ATTACHMENT2 };
+								 GL_COLOR_ATTACHMENT2
+		};
 		glDrawBuffers(4, drawBuffers);
 
 
@@ -169,8 +182,6 @@ bool SSAO::InitFBO()
 			std::cerr << "Framebuffer is not complete." << std::endl;
 			return false;
 		}
-
-		glBindTexture(GL_TEXTURE_2D, NULL);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, NULL);
 
@@ -208,10 +219,6 @@ void SSAO::Render()
 	glUniformSubroutinesuiv(GL_VERTEX_SHADER, 1, &renderPass_Render_vs);
 	glUniformSubroutinesuiv(GL_FRAGMENT_SHADER, 1, &renderPass_Render_fs);
 
-	glBindTexture(GL_TEXTURE_2D, positionTex);
-	glBindTexture(GL_TEXTURE_2D, normalTex);
-	glBindTexture(GL_TEXTURE_2D, albedoTex);
-	glBindTexture(GL_TEXTURE_2D, sampleTex);
 	{
 		glBegin(GL_QUADS);
 		glVertex2d(0.0, 0.0);
@@ -220,7 +227,5 @@ void SSAO::Render()
 		glVertex2d(0.0, 1.0);
 		glEnd();
 	}
-	glBindTexture(GL_TEXTURE_2D, NULL);
-
 	glFinish();
 }
